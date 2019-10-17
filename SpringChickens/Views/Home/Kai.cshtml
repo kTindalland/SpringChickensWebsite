@@ -1,8 +1,36 @@
 ﻿@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
+@using SpringChickens.ViewModels;
+@model DogsViewModel
 @{
-    ViewData["Title"] = "Kai's Test Page :)";
+    ViewData["Title"] = "Doggos";
 }
 
-<h1>Hello world!</h1>
+@{
+    foreach (var dog in Model.Dogs)
+    {
+        <div class="card">
+            <div class="row card-body">
+                <div class="col-sm">
+
+                    <img src=@dog.PhotoName class="img-fluid" />
+
+                </div>
+                <div class="col-sm">
+                    <h1 class="display-4">@dog.Title</h1>
+                    <p class="text-body">
+                        @dog.MainBodyText
+                    </p>
+
+                </div>
+            </div>
+        </div>
+
+        <br />
+    }
+}
+
+
+
+
