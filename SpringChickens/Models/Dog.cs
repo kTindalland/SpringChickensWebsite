@@ -11,5 +11,12 @@ namespace SpringChickens.Models
         public string Title { get; set; }
         public string MainBodyText { get; set; }
 
+        public int PostId { get; set; }
+
+
+        public Dog()
+        {
+            
+        }
     }
 }

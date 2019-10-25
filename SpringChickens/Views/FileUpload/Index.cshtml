@@ -1,0 +1,27 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+
+}
+@model FileUploadViewModel
+
+<div class="row">
+    <div class="col-sm">
+
+        <h4>Upload File</h4>
+
+        <form asp-controller="FileUpload" asp-action="SingleFile" enctype="multipart/form-data" method="post">
+
+            <input type="text" placeholder="Title.." asp-for="Title" />
+
+            <input type="text" placeholder="Description.." asp-for="Description" />
+
+            <input type="file" name="file" asp-for="File" />
+
+            <button type="submit">Submit</button>
+
+        </form>
+
+    </div>
+</div>

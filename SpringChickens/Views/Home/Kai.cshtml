@@ -8,6 +8,8 @@
 }
 
 @{
+    
+
     foreach (var dog in Model.Dogs)
     {
         <div class="card">
@@ -25,10 +27,17 @@
 
                 </div>
             </div>
+
+            <div class="card-footer">
+                <a class="btn btn-outline-danger close" aria-label="delete" asp-controller="Home" asp-action="DeletePost" asp-route-id="@dog.PostId" type="button">
+                    <span aria-hidden="true">&times;</span>
+                </a>
+            </div>
         </div>
 
         <br />
     }
+
 }
 
 
