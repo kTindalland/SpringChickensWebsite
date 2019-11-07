@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Hosting;
 using SpringChickens.Models;
 using Database.Models;
 using Database;
+using System.Web;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -16,9 +17,9 @@ namespace SpringChickens.Controllers
 {
     public class FileUploadController : Controller
     {
-        private IHostingEnvironment _env;
+        private IWebHostEnvironment _env;
 
-        public FileUploadController(IHostingEnvironment env)
+        public FileUploadController(IWebHostEnvironment env)
         {
             _env = env;
         }
@@ -36,6 +37,7 @@ namespace SpringChickens.Controllers
 
             var file = viewmodel.File;
             // Add name validation.
+
 
             using (var fileStream = new FileStream($"{dir}/images/{viewmodel.File.FileName}", FileMode.Create, FileAccess.ReadWrite))
             {
