@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
-using Interfaces.Database;
+using Interfaces.Database.Entities;
 
 namespace Database.Models
 {
-    public class Trip : IEntity
+    internal class Trip : ITrip
     {
         public int Id { get; set; }
 

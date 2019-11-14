@@ -10,6 +10,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SpringChickens.Services;
 using Interfaces;
+using Interfaces.Services;
+using Interfaces.Database;
+using Database;
 
 namespace SpringChickens
 {
@@ -28,7 +31,10 @@ namespace SpringChickens
             services.AddControllersWithViews();
 
 
-            services.AddSingleton<IDatabaseService, DatabaseService>();
+            
+            services.AddSingleton<ICryptographyService, CryptographyService>();
+            services.AddSingleton<IUserService, UserService>();
+            services.AddSingleton<IUnitOfWork, DatabaseUnitOfWork>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

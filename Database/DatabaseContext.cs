@@ -6,10 +6,11 @@ using Database.Models;
 
 namespace Database
 {
-    public class DatabaseContext : DbContext
+    internal class DatabaseContext : DbContext
     {
         public DbSet<Trip> Trips { get; set; }
         public DbSet<Post> Posts { get; set; }
+        public DbSet<User> Users { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

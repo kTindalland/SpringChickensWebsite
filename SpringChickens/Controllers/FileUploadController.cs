@@ -10,6 +10,8 @@ using SpringChickens.Models;
 using Database.Models;
 using Database;
 using System.Web;
+using Interfaces.Database;
+using Interfaces.Database.Entities;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -18,10 +20,12 @@ namespace SpringChickens.Controllers
     public class FileUploadController : Controller
     {
         private IWebHostEnvironment _env;
+        private IUnitOfWork _context;
 
-        public FileUploadController(IWebHostEnvironment env)
+        public FileUploadController(IWebHostEnvironment env, IUnitOfWork context)
         {
             _env = env;
+            _context = context;
         }
 
         // GET: /<controller>/
@@ -46,23 +50,13 @@ namespace SpringChickens.Controllers
 
             // TODO: Dependency inject in a db with repo pattern.
 
-            using (var dbContext = new DatabaseContext())
-            {
-                var firstTripId = dbContext.Trips.First().Id;
 
-                var newPost = new Post()
-                {
-                    Title = viewmodel.Title,
-                    BodyText = viewmodel.Description,
-                    PhotoFileName = file.FileName,
-                    TripId = firstTripId
-                };
+            var firstTripId = _context.TripRepository.GetFirstTripId();
 
-                dbContext.Posts.Add(newPost);
+            _context.PostRepository.CreateAndAddNewPost(viewmodel.Title, viewmodel.Description, file.FileName, firstTripId);
 
-                dbContext.SaveChanges();
 
-            }
+            _context.SaveChanges();
 
             
 

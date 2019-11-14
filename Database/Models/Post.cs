@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
-using Interfaces.Database;
+using Interfaces.Database.Entities;
 using System.ComponentModel.DataAnnotations;
 
 namespace Database.Models
 {
-    public class Post : IEntity
+    internal class Post : IPost
     {
         public int Id { get; set; }
 
