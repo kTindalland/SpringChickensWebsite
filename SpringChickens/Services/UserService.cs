@@ -36,5 +36,27 @@ namespace SpringChickens.Services
 
             return (hashedPass == rec.Hash);
         }
+
+        public bool CreateNewUser(string username, string password, out string errormsg)
+        {
+
+            if (_context.UserRepository.CheckIfUserExists(username))
+            {
+                errormsg = "Username has been taken.";
+                return false;
+            }
+
+            var salt = _cryptographyService.GenerateSalt();
+
+            var hashedPassword = _cryptographyService.Hash(password + salt);
+
+            _context.UserRepository.CreateAndAddUser(username, hashedPassword, salt, false);
+
+            _context.SaveChanges();
+
+            errormsg = "";
+            return true;
+
+        }
     }
 }

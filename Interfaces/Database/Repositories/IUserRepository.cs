@@ -11,5 +11,11 @@ namespace Interfaces.Database.Repositories
         bool GetUserIfExists(int id, out IUser result);
 
         bool GetUserIfExists(string username, out IUser result);
+
+        bool CheckIfUserExists(string username);
+
+        bool CheckIfUserExists(int id);
+
+        void CreateAndAddUser(string username, string hash, string salt, bool adminRights);
     }
 }

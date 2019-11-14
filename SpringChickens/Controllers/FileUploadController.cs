@@ -48,8 +48,6 @@ namespace SpringChickens.Controllers
                 file.CopyTo(fileStream);
             }
 
-            // TODO: Dependency inject in a db with repo pattern.
-
 
             var firstTripId = _context.TripRepository.GetFirstTripId();
 

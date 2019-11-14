@@ -13,6 +13,7 @@ using Interfaces;
 using Interfaces.Services;
 using Interfaces.Database;
 using Database;
+using SpringChickens.Models;
 
 namespace SpringChickens
 {
@@ -30,11 +31,12 @@ namespace SpringChickens
         {
             services.AddControllersWithViews();
 
+            services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
 
-            
             services.AddSingleton<ICryptographyService, CryptographyService>();
             services.AddSingleton<IUserService, UserService>();
             services.AddSingleton<IUnitOfWork, DatabaseUnitOfWork>();
+            services.AddTransient<IEmailService, EmailService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

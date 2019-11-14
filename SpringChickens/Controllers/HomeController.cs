@@ -29,6 +29,7 @@ namespace SpringChickens.Controllers
             _env = env;
             _userService = userService;
             _context = context;
+
         }
 
         public IActionResult Index()
@@ -70,17 +71,39 @@ namespace SpringChickens.Controllers
 
             var viewmodel = new SignupViewmodel()
             {
-                ErrorMessage = "Hello world"
+                ErrorMessage = ""
             };
 
             return View(viewmodel);
         }
 
+        [HttpPost, ValidateAntiForgeryToken]
         public IActionResult RegisterNewUser(SignupViewmodel viewmodel)
         {
-            
+            if (viewmodel.Password != viewmodel.ConfirmPassword)
+            {
+                viewmodel.UserName = "";
+                viewmodel.Password = "";
+                viewmodel.ConfirmPassword = "";
 
-            return View("Signup", viewmodel);
+                viewmodel.ErrorMessage = "Passwords do not match.";
+
+                return View("Signup", viewmodel);
+            }
+
+            string errormsg;
+            if (!_userService.CreateNewUser(viewmodel.UserName, viewmodel.Password, out errormsg))
+            {
+                viewmodel.UserName = "";
+                viewmodel.Password = "";
+                viewmodel.ConfirmPassword = "";
+
+                viewmodel.ErrorMessage = errormsg;
+
+                return View("Signup", viewmodel);
+            }
+
+            return RedirectToAction("Index");
         }
 
         public IActionResult Contact()

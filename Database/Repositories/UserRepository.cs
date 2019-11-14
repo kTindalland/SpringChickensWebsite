@@ -52,5 +52,28 @@ namespace Database.Repositories
 
             return true;
         }
+
+        public bool CheckIfUserExists(string username)
+        {
+            return Context.Users.Any(r => r.UserName == username);
+        }
+
+        public bool CheckIfUserExists(int id)
+        {
+            return Context.Users.Any(r => r.Id == id);
+        }
+
+        public void CreateAndAddUser(string username, string hash, string salt, bool adminRights)
+        {
+            var newUser = new User()
+            {
+                UserName = username,
+                Hash = hash,
+                Salt = salt,
+                AdminRights = adminRights
+            };
+
+            Context.Users.Add(newUser);
+        }
     }
 }
