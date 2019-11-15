@@ -12,11 +12,19 @@ namespace SpringChickens.Services
     {
         private readonly ICryptographyService _cryptographyService;
         private readonly IUnitOfWork _context;
+        private readonly IPasswordFilterPredicate _passwordPredicate;
+        private readonly IUsernameFilterPredicate _usernamePredicate;
 
-        public UserService(ICryptographyService cryptographyService, IUnitOfWork context)
+        public UserService(
+            ICryptographyService cryptographyService,
+            IUnitOfWork context,
+            IPasswordFilterPredicate passwordPredicate,
+            IUsernameFilterPredicate usernamePredicate)
         {
             _cryptographyService = cryptographyService;
             _context = context;
+            _passwordPredicate = passwordPredicate;
+            _usernamePredicate = usernamePredicate;
         }
 
         public bool AuthenticateLogin(string username, string password)
@@ -43,6 +51,16 @@ namespace SpringChickens.Services
             if (_context.UserRepository.CheckIfUserExists(username))
             {
                 errormsg = "Username has been taken.";
+                return false;
+            }
+
+            if (!_usernamePredicate.Validate(username, out errormsg) 
+            {
+                return false;
+            }
+
+            if (!_passwordPredicate.Validate(password, out errormsg))
+            {
                 return false;
             }
 

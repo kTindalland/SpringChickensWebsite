@@ -37,6 +37,8 @@ namespace SpringChickens
             services.AddSingleton<IUserService, UserService>();
             services.AddSingleton<IUnitOfWork, DatabaseUnitOfWork>();
             services.AddTransient<IEmailService, EmailService>();
+            services.AddTransient<IPasswordFilterPredicate, PasswordFilterPredicate>();
+            services.AddTransient<IUsernameFilterPredicate, UsernameFilterPredicate>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
