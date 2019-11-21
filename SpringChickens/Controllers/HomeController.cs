@@ -56,6 +56,7 @@ namespace SpringChickens.Controllers
             return View(vm);
         }
 
+        // TODO: Needs to be removed at some point.
         public IActionResult Kai()
         {
             var vm = _viewModelFactory.Resolve<DogsViewModel>();
@@ -151,12 +152,6 @@ namespace SpringChickens.Controllers
             return View(vm);
         }
 
-        public IActionResult AllFeeds()
-        {
-            var vm = _viewModelFactory.Resolve<BaseViewModel>();
-
-            return View(vm);
-        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
@@ -167,6 +162,7 @@ namespace SpringChickens.Controllers
             return View(vm);
         }
 
+        // TODO: Needs to be removed at some point.
         public IActionResult DeletePost(int id = 0)
         {
             if (id == 0)

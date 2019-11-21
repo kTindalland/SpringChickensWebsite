@@ -29,7 +29,26 @@ namespace Database.Repositories
 
         public int GetFirstTripId()
         {
-            return Context.Trips.First().Id;
+            var result = Context.Trips.First().Id;
+            return result;
+        }
+
+        public IEnumerable<ITrip> GetAllTrips()
+        {
+            var result = Context.Trips.ToList();
+            return result;
+        }
+
+        public string GetTripName(int id)
+        {
+            string result = "Erroneous Trip Name";
+
+            if (Context.Trips.Any(r => r.Id == id))
+            {
+                result = Context.Trips.First(r => r.Id == id).TripName;
+            }
+
+            return result;
         }
     }
 }

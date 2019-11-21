@@ -9,6 +9,9 @@ namespace Interfaces.Database.Repositories
     {
         // Specific Trip Repository features.
 
+        IEnumerable<ITrip> GetAllTrips();
+
+        string GetTripName(int id);
         int GetFirstTripId();
     }
 }

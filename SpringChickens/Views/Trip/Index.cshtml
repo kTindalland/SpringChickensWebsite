@@ -1,0 +1,55 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@using SpringChickens.ViewModels
+@model AllTripsViewModel
+@{ 
+    ViewData["Title"] = "All Trips";
+
+    var leftOver = Model.Trips.Count % 3;
+    var rows = (Model.Trips.Count - leftOver) / 3;
+}
+
+@for (int row = 0; row < rows; row++)
+{
+    <div class="card-deck pb-4">
+
+        @for (int col = 0; col < 3; col++)
+        {
+            <div class="card border-dark">
+                @*<img src="..." class="card-img-top" alt="...">*@
+                <div class="card-body">
+                    @{ var trip = Model.Trips[(row * 3) + col];}
+                    <h5 class="card-title">@trip.TripName</h5>
+                    <p class="card-text">@trip.TripDescription</p>
+                    <a class="btn btn-outline-success card-link" asp-controller="Trip" asp-action="ViewTrip" asp-route-id="@trip.Id">View Posts</a>
+                </div>
+                <div class="card-footer">
+                    <small class="text-muted">Last updated 3 mins ago</small>
+                </div>
+            </div>
+        }
+
+    </div>
+}
+
+<div class="card-deck">
+
+    @for (int col = 0; col < leftOver; col++)
+    {
+        <div class="card border-dark">
+            @*<img src="..." class="card-img-top" alt="...">*@
+            <div class="card-body">
+                @{ var trip = Model.Trips[(rows * 3) + col];}
+                <h5 class="card-title">@trip.TripName</h5>
+                <p class="card-text">@trip.TripDescription</p>
+                <a class="btn btn-outline-success" asp-controller="Trip" asp-action="ViewTrip" asp-route-id="@trip.Id">View Posts</a>
+            </div>
+            <div class="card-footer">
+                    <small class="text-muted">Last updated 3 mins ago</small>
+                </div>
+        </div>
+    }
+
+</div>
+

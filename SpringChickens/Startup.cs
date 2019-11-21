@@ -37,7 +37,7 @@ namespace SpringChickens
 
             services.AddSingleton<ICryptographyService, CryptographyService>();
             services.AddSingleton<IUserService, UserService>();
-            services.AddSingleton<IUnitOfWork, DatabaseUnitOfWork>();
+            services.AddTransient<IUnitOfWork, DatabaseUnitOfWork>();
             services.AddTransient<IEmailService, EmailService>();
             services.AddTransient<IPasswordFilterPredicate, PasswordFilterPredicate>();
             services.AddTransient<IUsernameFilterPredicate, UsernameFilterPredicate>();

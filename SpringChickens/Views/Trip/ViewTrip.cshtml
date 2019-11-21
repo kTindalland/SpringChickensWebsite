@@ -1,0 +1,43 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@using SpringChickens.ViewModels
+@model TripViewModel
+
+@{
+    ViewData["Title"] = Model.TripName;
+}
+
+
+@{
+
+
+foreach (var post in Model.Posts)
+{
+    <div class="card">
+        <div class="row card-body">
+            <div class="col-sm">
+
+                <img src=@post.PhotoFileName class="img-fluid" />
+
+            </div>
+            <div class="col-sm">
+                <h1 class="display-4">@post.Title</h1>
+                <p class="text-body">
+                    @post.BodyText
+                </p>
+
+            </div>
+        </div>
+
+        <div class="card-footer">
+            <a class="btn btn-outline-danger close" aria-label="delete" asp-controller="Home" asp-action="DeletePost" asp-route-id="@post.Id" type="button">
+                <span aria-hidden="true">&times;</span>
+            </a>
+        </div>
+    </div>
+
+    <br />
+    }
+
+}

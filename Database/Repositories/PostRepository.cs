@@ -52,7 +52,8 @@ namespace Database.Repositories
 
         public IEnumerable<IPost> GetAllPosts()
         {
-            return Context.Posts.ToList();
+            var result = Context.Posts.ToList();
+            return result;
         }
 
         public void CreateAndAddNewPost(string title, string body, string photoFile, int tripId)
@@ -66,6 +67,12 @@ namespace Database.Repositories
             };
 
             Context.Posts.Add(newPost);
+        }
+
+        public IEnumerable<IPost> GetAllPostsFromTrip(int tripId)
+        {
+            var result = Context.Posts.Where(r => r.TripId == tripId).ToList();
+            return result;
         }
     }
 }

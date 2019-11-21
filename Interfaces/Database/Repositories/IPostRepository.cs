@@ -14,6 +14,8 @@ namespace Interfaces.Database.Repositories
 
         IEnumerable<IPost> GetAllPosts();
 
+        IEnumerable<IPost> GetAllPostsFromTrip(int tripId);
+
         void CreateAndAddNewPost(string title, string body, string photoFile, int tripId);
     }
 }
