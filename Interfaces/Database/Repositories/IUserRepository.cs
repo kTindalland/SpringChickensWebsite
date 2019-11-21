@@ -16,6 +16,6 @@ namespace Interfaces.Database.Repositories
 
         bool CheckIfUserExists(int id);
 
-        void CreateAndAddUser(string username, string hash, string salt, bool adminRights);
+        void CreateAndAddUser(string username, string hash, string salt, string email, bool adminRights);
     }
 }

@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@using Interfaces.ViewModels
+@using SpringChickens.ViewModels;
+@model IBaseViewModel
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -20,9 +24,15 @@
 
 
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Signup">Sign-up</a>
-                        </li>
+                        @{
+                            if (!Model.Layout_SignedIn)
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Signup">Sign-up</a>
+                                </li>
+                            }
+                        }
+
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Contact">Contact Us</a>
                         </li>
@@ -31,11 +41,25 @@
                         </li>
                     </ul>
 
-                    <form class="form-inline">
-                        <input type="text" class="form-control mr-sm-2" placeholder="Username" aria-label="Username" />
-                        <input type="password" class="form-control mr-sm-2 my-2" placeholder="Password" aria-label="Password" />
-                        <button type="submit" class="btn btn-primary">Sign-in</button>
-                    </form>
+                    @{
+                        if (!Model.Layout_SignedIn)
+                        {
+                            <form class="form-inline" asp-controller="Home" asp-action="Login">
+                                <input asp-for="Layout_Username" type="text" class="form-control mr-sm-2" placeholder="Username" aria-label="Username" />
+                                <input asp-for="Layout_Password" type="password" class="form-control mr-sm-2 my-2" placeholder="Password" aria-label="Password" />
+                                <button type="submit" class="btn btn-primary">Sign-in</button>
+                            </form>
+                        }
+                        else
+                        {
+                            <p>Hello, @Model.Layout_Username!</p>
+                            <a class="btn btn-primary" asp-controller="Home" asp-action="SignOut">Sign-out</a>
+                        }
+                    }
+
+
+
+
 
                 </div>
             </div>

@@ -14,6 +14,8 @@ using Interfaces.Services;
 using Interfaces.Database;
 using Database;
 using SpringChickens.Models;
+using SpringChickens.Factories;
+using Interfaces.Factories;
 
 namespace SpringChickens
 {
@@ -39,6 +41,8 @@ namespace SpringChickens
             services.AddTransient<IEmailService, EmailService>();
             services.AddTransient<IPasswordFilterPredicate, PasswordFilterPredicate>();
             services.AddTransient<IUsernameFilterPredicate, UsernameFilterPredicate>();
+            services.AddSingleton<ICredentialHoldingService, CredentialHoldingService>();
+            services.AddSingleton<IViewModelFactory, ViewModelFactory>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

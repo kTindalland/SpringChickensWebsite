@@ -63,7 +63,7 @@ namespace Database.Repositories
             return Context.Users.Any(r => r.Id == id);
         }
 
-        public void CreateAndAddUser(string username, string hash, string salt, bool adminRights)
+        public void CreateAndAddUser(string username, string hash, string salt, string email, bool adminRights)
         {
             var newUser = new User()
             {

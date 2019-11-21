@@ -8,6 +8,6 @@ namespace Interfaces.Services
     {
         bool AuthenticateLogin(string username, string password);
 
-        bool CreateNewUser(string username, string password, out string errormsg);
+        bool CreateNewUser(string username, string password, string email, out string errormsg);
     }
 }

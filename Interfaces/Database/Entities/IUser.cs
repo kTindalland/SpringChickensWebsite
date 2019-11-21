@@ -12,6 +12,8 @@ namespace Interfaces.Database.Entities
 
         string Salt { get; set; }
 
+        string Email { get; set; }
+
         bool AdminRights { get; set; }
     }
 }

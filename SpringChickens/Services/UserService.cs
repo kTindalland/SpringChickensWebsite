@@ -45,7 +45,7 @@ namespace SpringChickens.Services
             return (hashedPass == rec.Hash);
         }
 
-        public bool CreateNewUser(string username, string password, out string errormsg)
+        public bool CreateNewUser(string username, string password, string email, out string errormsg)
         {
 
             if (_context.UserRepository.CheckIfUserExists(username))
@@ -54,7 +54,7 @@ namespace SpringChickens.Services
                 return false;
             }
 
-            if (!_usernamePredicate.Validate(username, out errormsg) 
+            if (!_usernamePredicate.Validate(username, out errormsg)) 
             {
                 return false;
             }
@@ -68,7 +68,7 @@ namespace SpringChickens.Services
 
             var hashedPassword = _cryptographyService.Hash(password + salt);
 
-            _context.UserRepository.CreateAndAddUser(username, hashedPassword, salt, false);
+            _context.UserRepository.CreateAndAddUser(username, hashedPassword, salt, email, false);
 
             _context.SaveChanges();
 

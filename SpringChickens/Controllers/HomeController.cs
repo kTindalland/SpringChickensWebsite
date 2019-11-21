@@ -15,6 +15,8 @@ using System.IO;
 using Interfaces.Services;
 using Interfaces.Database;
 using Interfaces.Database.Entities;
+using Interfaces.Factories;
+using Interfaces.ViewModels;
 
 namespace SpringChickens.Controllers
 {
@@ -23,28 +25,40 @@ namespace SpringChickens.Controllers
         private readonly IWebHostEnvironment _env;
         private readonly IUserService _userService;
         private readonly IUnitOfWork _context;
+        private readonly ICredentialHoldingService _credentialHoldingService;
+        private readonly IViewModelFactory _viewModelFactory;
 
-        public HomeController(IWebHostEnvironment env, IUserService userService, IUnitOfWork context)
+        public HomeController(
+            IWebHostEnvironment env,
+            IUserService userService,
+            IUnitOfWork context,
+            ICredentialHoldingService credentialHoldingService,
+            IViewModelFactory viewModelFactory)
         {
             _env = env;
             _userService = userService;
             _context = context;
-
+            _credentialHoldingService = credentialHoldingService;
+            _viewModelFactory = viewModelFactory;
         }
 
         public IActionResult Index()
         {
-            return View();
+            var vm = _viewModelFactory.Resolve<BaseViewModel>();
+
+            return View(vm);
         }
 
         public IActionResult Privacy()
         {
-            return View();
+            var vm = _viewModelFactory.Resolve<BaseViewModel>();
+
+            return View(vm);
         }
 
         public IActionResult Kai()
         {
-            var vm = new DogsViewModel();
+            var vm = _viewModelFactory.Resolve<DogsViewModel>();
 
 
             var posts = _context.PostRepository.GetAllPosts();
@@ -69,12 +83,34 @@ namespace SpringChickens.Controllers
         public IActionResult Signup()
         {
 
-            var viewmodel = new SignupViewmodel()
-            {
-                ErrorMessage = ""
-            };
+            var viewmodel = _viewModelFactory.Resolve<SignupViewmodel>();
+
+            viewmodel.ErrorMessage = "";
 
             return View(viewmodel);
+        }
+
+        public IActionResult Login(BaseViewModel viewmodel)
+        {
+            var authenticated = _userService.AuthenticateLogin(viewmodel.Layout_Username, viewmodel.Layout_Password);
+
+            if (authenticated)
+            {
+                IUser user;
+                _context.UserRepository.GetUserIfExists(viewmodel.Layout_Username, out user);
+
+                _credentialHoldingService.PopulateService(user);
+            }
+
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult SignOut()
+        {
+
+            _credentialHoldingService.WipeService();
+
+            return RedirectToAction("Index");
         }
 
         [HttpPost, ValidateAntiForgeryToken]
@@ -83,6 +119,7 @@ namespace SpringChickens.Controllers
             if (viewmodel.Password != viewmodel.ConfirmPassword)
             {
                 viewmodel.UserName = "";
+                viewmodel.Email = "";
                 viewmodel.Password = "";
                 viewmodel.ConfirmPassword = "";
 
@@ -92,9 +129,10 @@ namespace SpringChickens.Controllers
             }
 
             string errormsg;
-            if (!_userService.CreateNewUser(viewmodel.UserName, viewmodel.Password, out errormsg))
+            if (!_userService.CreateNewUser(viewmodel.UserName, viewmodel.Password, viewmodel.Email, out errormsg))
             {
                 viewmodel.UserName = "";
+                viewmodel.Email = "";
                 viewmodel.Password = "";
                 viewmodel.ConfirmPassword = "";
 
@@ -108,18 +146,25 @@ namespace SpringChickens.Controllers
 
         public IActionResult Contact()
         {
-            return View();
+            var vm = _viewModelFactory.Resolve<BaseViewModel>();
+
+            return View(vm);
         }
 
         public IActionResult AllFeeds()
         {
-            return View();
+            var vm = _viewModelFactory.Resolve<BaseViewModel>();
+
+            return View(vm);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            var vm = _viewModelFactory.Resolve<ErrorViewModel>();
+            vm.RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier;
+
+            return View(vm);
         }
 
         public IActionResult DeletePost(int id = 0)

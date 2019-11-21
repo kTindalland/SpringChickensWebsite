@@ -14,6 +14,8 @@ namespace Database.Models
         public string Hash { get; set; }
 
         public string Salt { get; set; }
+
+        public string Email { get; set; }
         
         public bool AdminRights { get; set; }
     }
