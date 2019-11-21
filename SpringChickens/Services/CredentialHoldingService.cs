@@ -4,22 +4,59 @@ using System.Linq;
 using System.Threading.Tasks;
 using Interfaces.Database.Entities;
 using Interfaces.Services;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 
 namespace SpringChickens.Services
 {
     public class CredentialHoldingService : ICredentialHoldingService
     {
-        public bool IsAdmin { get; private set; }
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public string Username { get; private set; }
-
-        public string Email { get; private set; }
-
-        public bool LoggedIn { get; private set; }
-
-        public CredentialHoldingService()
+        public bool IsAdmin
         {
+            get => "true" == _httpContextAccessor.HttpContext.Session.GetString("IsAdmin");
+            private set
+            {
+                _httpContextAccessor.HttpContext.Session.SetString("IsAdmin", value ? "true" : "false");
+            }
+        }
+
+        public string Username 
+        {
+            get => _httpContextAccessor.HttpContext.Session.GetString("Username");
+
+            private set
+            {
+                _httpContextAccessor.HttpContext.Session.SetString("Username", value);
+            }
+        }
+
+        public string Email 
+        {
+            get => _httpContextAccessor.HttpContext.Session.GetString("Email");
+
+            private set
+            {
+                _httpContextAccessor.HttpContext.Session.SetString("Email", value);
+            }
+        }
+
+        public bool LoggedIn 
+        { 
+            get => "true" == _httpContextAccessor.HttpContext.Session.GetString("LoggedIn");
+            private set
+            {
+                _httpContextAccessor.HttpContext.Session.SetString("LoggedIn", value ? "true" : "false");
+            }
+        }
+
+
+
+        public CredentialHoldingService(IHttpContextAccessor httpContextAccessor)
+        {
+            _httpContextAccessor = httpContextAccessor;
+
             LoggedIn = false;
         }
 
@@ -27,7 +64,7 @@ namespace SpringChickens.Services
         {
             IsAdmin = user.AdminRights;
             Username = user.UserName;
-            Email = user.Email;
+            Email = user.Email ?? "NO EMAIL GIVEN";
 
             LoggedIn = true;
         }
@@ -39,18 +76,6 @@ namespace SpringChickens.Services
             Email = null;
 
             LoggedIn = false;
-        }
-
-        public void PopulateViewData(ViewDataDictionary viewData)
-        {
-            viewData["LoggedIn"] = LoggedIn;
-            
-            if (LoggedIn)
-            {
-                viewData["Username"] = Username;
-                viewData["Email"] = Email;
-                viewData["IsAdmin"] = IsAdmin;
-            }
         }
     }
 }

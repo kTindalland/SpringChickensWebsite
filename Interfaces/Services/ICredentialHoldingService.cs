@@ -12,8 +12,6 @@ namespace Interfaces.Services
 
         void WipeService();
 
-        void PopulateViewData(ViewDataDictionary viewData);
-
         bool LoggedIn { get; }
 
         bool IsAdmin { get; }

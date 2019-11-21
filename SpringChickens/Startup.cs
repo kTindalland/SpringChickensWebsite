@@ -16,6 +16,7 @@ using Database;
 using SpringChickens.Models;
 using SpringChickens.Factories;
 using Interfaces.Factories;
+using Microsoft.AspNetCore.Http;
 
 namespace SpringChickens
 {
@@ -43,11 +44,17 @@ namespace SpringChickens
             services.AddTransient<IUsernameFilterPredicate, UsernameFilterPredicate>();
             services.AddSingleton<ICredentialHoldingService, CredentialHoldingService>();
             services.AddSingleton<IViewModelFactory, ViewModelFactory>();
+
+            services.AddSession(options => options.IdleTimeout = TimeSpan.FromMinutes(5));
+
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddHttpContextAccessor();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -65,12 +72,15 @@ namespace SpringChickens
             
             app.UseAuthorization();
 
+            app.UseSession();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            
         }
     }
 }
