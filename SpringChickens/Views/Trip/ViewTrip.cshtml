@@ -18,7 +18,11 @@ foreach (var post in Model.Posts)
         <div class="row card-body">
             <div class="col-sm">
 
-                <img src=@post.PhotoFileName class="img-fluid" />
+                @{ 
+                    var fullPath = Model.PathPrefix + post.PhotoFileName;
+                }
+
+                <img src=@fullPath class="img-fluid" />
 
             </div>
             <div class="col-sm">
@@ -31,7 +35,7 @@ foreach (var post in Model.Posts)
         </div>
 
         <div class="card-footer">
-            <form asp-controller="Trip" asp-action="DeletePost">
+            <form asp-controller="Trip" asp-action="DeletePost" asp-route-tripId="@Model.Delete_TripId">
                 <input value="@post.Id" style="display: none" asp-for="Delete_Id" />
 
                 <button type="submit" class="btn btn-outline-danger">

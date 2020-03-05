@@ -23,6 +23,7 @@ namespace SpringChickens.Factories
 
             result.Layout_SignedIn = _credService.LoggedIn;
             result.Layout_Username = result.Layout_SignedIn ? _credService.Username : null;
+            result.Layout_IsAdmin = result.Layout_SignedIn ? _credService.IsAdmin : false;
 
             return (T)result;
         }

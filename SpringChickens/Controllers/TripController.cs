@@ -8,6 +8,7 @@ using SpringChickens.ViewModels;
 using Interfaces.Database;
 using Microsoft.AspNetCore.Hosting;
 using Interfaces.Database.Entities;
+using Microsoft.AspNetCore.Routing;
 
 namespace SpringChickens.Controllers
 {
@@ -47,11 +48,13 @@ namespace SpringChickens.Controllers
 
             vm.Delete_TripId = id;
 
+            vm.PathPrefix = "../../images/";
+
             return View(vm);
         }
 
         [HttpPost, ValidateAntiForgeryToken]
-        public IActionResult DeletePost(TripViewModel vm)
+        public IActionResult DeletePost(TripViewModel vm, string tripId)
         {
             if (vm.Delete_Id == 0)
                 return RedirectToAction("Index");
@@ -69,7 +72,7 @@ namespace SpringChickens.Controllers
                 _context.SaveChanges();
             }
 
-            return RedirectToAction("ViewTrip", vm.Delete_TripId);
+            return RedirectToAction("ViewTrip", "Trip", new RouteValueDictionary() { {"id", tripId} });
         }
     }
 }

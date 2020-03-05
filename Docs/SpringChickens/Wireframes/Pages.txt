@@ -1,0 +1,17 @@
+Site
+----
+
+- Main Page (General Info with latest updates feed, log in at top)
+- Contact Page
+- Feed Selector (Select which trip you want to look at)
+- Trip displayer (Select which way you want the dates to go)
+- User preferences (If they want to be emailed on updates)
+
+
+Admin
+-----
+
+- Admin page (Add trip, new post, new admin accounts, schedule posts?)
+- New Trip
+- New Post
+- New Admin

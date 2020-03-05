@@ -13,6 +13,7 @@ namespace SpringChickens.ViewModels
         public bool Layout_SignedIn { get; set; }
         public string Layout_Username { get; set; }
         public string Layout_Password { get; set; }
+        public bool Layout_IsAdmin { get; set; }
 
         public DogsViewModel()
         {
