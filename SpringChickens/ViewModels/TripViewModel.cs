@@ -16,5 +16,9 @@ namespace SpringChickens.ViewModels
         public List<IPost> Posts { get; set; }
 
         public string TripName { get; set; }
+
+        public int Delete_Id { get; set; }
+
+        public int Delete_TripId { get; set; }
     }
 }

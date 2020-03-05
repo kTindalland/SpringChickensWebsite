@@ -72,8 +72,8 @@ namespace SpringChickens.Services
         public void WipeService()
         {
             IsAdmin = false;
-            Username = null;
-            Email = null;
+            Username = "";
+            Email = "";
 
             LoggedIn = false;
         }

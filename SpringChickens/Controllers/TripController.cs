@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Interfaces.Factories;
 using SpringChickens.ViewModels;
 using Interfaces.Database;
+using Microsoft.AspNetCore.Hosting;
+using Interfaces.Database.Entities;
 
 namespace SpringChickens.Controllers
 {
@@ -13,13 +15,16 @@ namespace SpringChickens.Controllers
     {
         private readonly IViewModelFactory _viewModelFactory;
         private readonly IUnitOfWork _context;
+        private readonly IWebHostEnvironment _env;
 
         public TripController(
             IViewModelFactory viewModelFactory,
-            IUnitOfWork context)
+            IUnitOfWork context,
+            IWebHostEnvironment env)
         {
             _viewModelFactory = viewModelFactory;
             _context = context;
+            _env = env;
         }
 
         public IActionResult Index()
@@ -31,6 +36,7 @@ namespace SpringChickens.Controllers
             return View(vm);
         }
 
+        // NEED TO UPDATE TO ADD IMAGES PATH LIKE IN KAI IN HOME CONT.
         public IActionResult ViewTrip(int id)
         {
             var vm = _viewModelFactory.Resolve<TripViewModel>();
@@ -39,7 +45,31 @@ namespace SpringChickens.Controllers
 
             vm.TripName = _context.TripRepository.GetTripName(id);
 
+            vm.Delete_TripId = id;
+
             return View(vm);
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public IActionResult DeletePost(TripViewModel vm)
+        {
+            if (vm.Delete_Id == 0)
+                return RedirectToAction("Index");
+
+            IPost post;
+
+            if (_context.PostRepository.GetByIdIfExists(vm.Delete_Id, out post))
+            {
+
+
+                System.IO.File.Delete($"{ _env.WebRootPath}/images/{post.PhotoFileName}");
+
+                _context.PostRepository.RemovePost(post);
+
+                _context.SaveChanges();
+            }
+
+            return RedirectToAction("ViewTrip", vm.Delete_TripId);
         }
     }
 }

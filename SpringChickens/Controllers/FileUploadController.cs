@@ -12,6 +12,8 @@ using Database;
 using System.Web;
 using Interfaces.Database;
 using Interfaces.Database.Entities;
+using Interfaces.Factories;
+using SpringChickens.ViewModels;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -21,17 +23,24 @@ namespace SpringChickens.Controllers
     {
         private IWebHostEnvironment _env;
         private IUnitOfWork _context;
+        private readonly IViewModelFactory _viewModelFactory;
 
-        public FileUploadController(IWebHostEnvironment env, IUnitOfWork context)
+        public FileUploadController(
+            IWebHostEnvironment env,
+            IUnitOfWork context,
+            IViewModelFactory viewModelFactory)
         {
             _env = env;
             _context = context;
+            _viewModelFactory = viewModelFactory;
         }
 
         // GET: /<controller>/
         public IActionResult Index()
         {
-            return View();
+            var vm = _viewModelFactory.Resolve<FileUploadViewModel>();
+
+            return View(vm);
         }
 
         [HttpPost, ValidateAntiForgeryToken]

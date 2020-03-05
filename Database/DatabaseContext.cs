@@ -14,7 +14,7 @@ namespace Database
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Data Source=SQL6007.site4now.net;Initial Catalog=DB_A4EE1C_SpringChickens;User Id=DB_A4EE1C_SpringChickens_admin;Password=BAE12345;");
+            optionsBuilder.UseSqlServer("Data Source=SQL6009.site4now.net;Initial Catalog=DB_A54212_SpringChickens;User Id=DB_A54212_SpringChickens_admin;Password=BAE12345;");
         }
 
 

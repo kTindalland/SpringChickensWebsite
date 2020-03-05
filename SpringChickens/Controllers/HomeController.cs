@@ -46,6 +46,7 @@ namespace SpringChickens.Controllers
         {
             var vm = _viewModelFactory.Resolve<BaseViewModel>();
 
+
             return View(vm);
         }
 
