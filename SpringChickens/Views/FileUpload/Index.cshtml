@@ -13,13 +13,33 @@
 
         <form asp-controller="FileUpload" asp-action="SingleFile" enctype="multipart/form-data" method="post">
 
-            <input type="text" placeholder="Title.." asp-for="Title" />
+            <div class="form-group">
+                <label>Title:</label>
+                <input class="form-control" type="text" placeholder="Title.." asp-for="Title" />
+            </div>
 
-            <input type="text" placeholder="Description.." asp-for="Description" />
+            <div class="form-group">
+                <label>Description:</label>
+                <textarea class="form-control" type="text" placeholder="Description.." asp-for="Description" rows="4"></textarea>
+            </div>
 
-            <input type="file" name="file" asp-for="File" />
+            <div class="form-group">
+                <label>File to upload:</label>
+                <input class="form-control-file" type="file" name="file" asp-for="File" />
+            </div>
 
-            <button type="submit">Submit</button>
+            <div class="form-group">
+                <label>Select trip to add to:</label>
+                <select class="form-control-range" required>
+                    @foreach (var key in Model.Trips.Keys.OrderBy(k => k))
+                    {
+                        <option value="@key">@Model.Trips[key]</option>
+                    }
+                </select>
+            </div>
+            
+
+            <button class="btn btn-primary mt-3" type="submit">Submit</button>
 
         </form>
 

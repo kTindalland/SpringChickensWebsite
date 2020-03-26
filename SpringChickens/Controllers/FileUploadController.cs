@@ -40,6 +40,16 @@ namespace SpringChickens.Controllers
         {
             var vm = _viewModelFactory.Resolve<FileUploadViewModel>();
 
+            var trips = _context.TripRepository.GetAllTrips().ToList();
+
+            Dictionary<int, string> tripsDict = new Dictionary<int, string>();
+
+            foreach (var trip in trips.OrderBy(t => t.Id)) {
+                tripsDict[trip.Id] = trip.TripName;
+            }
+
+            vm.Trips = tripsDict;
+
             return View(vm);
         }
 
