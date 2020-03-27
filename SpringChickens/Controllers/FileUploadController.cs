@@ -53,6 +53,13 @@ namespace SpringChickens.Controllers
             return View(vm);
         }
 
+        public IActionResult AddNewTrip()
+        {
+            var vm = _viewModelFactory.Resolve<AddNewTripViewModel>();
+
+            return View(vm);
+        }
+
         [HttpPost, ValidateAntiForgeryToken]
         public IActionResult SingleFile(FileUploadViewModel viewmodel)
         {
@@ -78,6 +85,14 @@ namespace SpringChickens.Controllers
             
 
             return RedirectToAction("Index");
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public IActionResult CreateTrip(AddNewTripViewModel vm)
+        {
+
+
+            return RedirectToAction("AddNewTrip");
         }
     }
 }

@@ -1,0 +1,23 @@
+﻿@{
+    ViewData["Title"] = "Add New Trip";
+}
+@model SpringChickens.ViewModels.AddNewTripViewModel
+
+<div class="col-md-3">
+
+</div>
+<div class="col-md-6">
+    <form asp-controller="FileUpload" asp-action="CreateTrip">
+        <div class="form-group">
+            <label>Trip Name</label>
+            <input type="text" class="form-control" placeholder="Title.." asp-for="Title" />
+        </div>
+
+        <div class="form-group">
+            <label>Trip Name</label>
+            <textarea type="text" class="form-control" placeholder="Description.." asp-for="Description"></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
