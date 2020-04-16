@@ -18,6 +18,6 @@ namespace Database.Models
         public string Title { get; set; }
 
         public string BodyText { get; set; }
-
+        public DateTime DateTimePosted { get; set; }
     }
 }

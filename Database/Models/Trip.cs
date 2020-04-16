@@ -13,5 +13,6 @@ namespace Database.Models
         public string TripName { get; set; }
 
         public string TripDescription { get; set; }
+        public DateTime DateTimeLastActivity { get; set; }
     }
 }

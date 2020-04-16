@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Interfaces.Services;
 using Interfaces.Database.Entities;
 using Interfaces.Database;
+using System.Security.Policy;
 
 namespace SpringChickens.Services
 {
@@ -43,6 +44,20 @@ namespace SpringChickens.Services
             var hashedPass = _cryptographyService.Hash(unhashedSaltedPassword);
 
             return (hashedPass == rec.Hash);
+        }
+
+        public bool ChangePassword(IUser user, string newPassword, out string errormsg)
+        {
+            if (!_passwordPredicate.Validate(newPassword, out errormsg))
+            {
+                return false;
+            }
+
+            var salt = _cryptographyService.GenerateSalt();
+
+            var hashedPassword = _cryptographyService.Hash(newPassword + salt);
+
+            return _context.UserRepository.ChangePassword(user, salt, hashedPassword);
         }
 
         public bool CreateNewUser(string username, string password, string email, out string errormsg)

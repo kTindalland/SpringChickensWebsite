@@ -1,0 +1,36 @@
+﻿@model SpringChickens.ViewModels.Admin.ListUsersViewModel
+@{
+    ViewData["Title"] = "List Users";
+}
+
+<div class="row">
+    <div class="col-3"></div>
+    <div class="col-6">
+        <div class="card mb-2">
+            <div class="card-header">
+                Admin Users
+            </div>
+            <div class="card-body">
+                @foreach (var user in Model.AdminUsers)
+                {
+                    <p>@user.UserName</p>
+                    <br />
+                }
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                Standard Users
+            </div>
+            <div class="card-body">
+                @foreach (var user in Model.NormalUsers)
+                {
+                    <p>@user.UserName</p>
+                    <br />
+                }
+            </div>
+        </div>
+    </div>
+</div>
+

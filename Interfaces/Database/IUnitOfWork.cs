@@ -12,5 +12,6 @@ namespace Interfaces.Database
         IUserRepository UserRepository { get; }
         ITripRepository TripRepository { get; }
         IPostRepository PostRepository { get; }
+        IResetTokenRepository ResetTokenRepository { get; }
     }
 }

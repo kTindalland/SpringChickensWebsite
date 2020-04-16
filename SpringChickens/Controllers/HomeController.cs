@@ -27,19 +27,22 @@ namespace SpringChickens.Controllers
         private readonly IUnitOfWork _context;
         private readonly ICredentialHoldingService _credentialHoldingService;
         private readonly IViewModelFactory _viewModelFactory;
+        private readonly IPasswordResetService _passwordResetService;
 
         public HomeController(
             IWebHostEnvironment env,
             IUserService userService,
             IUnitOfWork context,
             ICredentialHoldingService credentialHoldingService,
-            IViewModelFactory viewModelFactory)
+            IViewModelFactory viewModelFactory,
+            IPasswordResetService passwordResetService)
         {
             _env = env;
             _userService = userService;
             _context = context;
             _credentialHoldingService = credentialHoldingService;
             _viewModelFactory = viewModelFactory;
+            _passwordResetService = passwordResetService;
         }
 
         public IActionResult Index()

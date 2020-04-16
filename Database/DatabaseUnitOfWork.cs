@@ -14,6 +14,7 @@ namespace Database
         public IUserRepository UserRepository { get; }
         public ITripRepository TripRepository { get; }
         public IPostRepository PostRepository { get; }
+        public IResetTokenRepository ResetTokenRepository { get; }
 
         public DatabaseUnitOfWork()
         {
@@ -22,6 +23,7 @@ namespace Database
             UserRepository = new UserRepository(_context);
             TripRepository = new TripRepository(_context);
             PostRepository = new PostRepository(_context);
+            ResetTokenRepository = new ResetTokenRepository(_context);
         }
 
         public bool SaveChanges()

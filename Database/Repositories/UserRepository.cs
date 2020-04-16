@@ -6,6 +6,7 @@ using Interfaces.Database.Repositories;
 using Database.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using Interfaces.Services;
 
 namespace Database.Repositories
 {
@@ -74,6 +75,36 @@ namespace Database.Repositories
             };
 
             Context.Users.Add(newUser);
+        }
+
+        public List<IUser> GetAllAdmins()
+        {
+            var adminUsers = Context.Users.Where(r => r.AdminRights).ToList<IUser>();
+
+            return adminUsers;
+        }
+
+        public List<IUser> GetAllNonAdmins()
+        {
+            var nonAdminUsers = Context.Users.Where(r => !r.AdminRights).ToList<IUser>();
+
+            return nonAdminUsers;
+        }
+
+        public bool ChangePassword(IUser user, string newSalt, string newPassword)
+        {
+            if (Context.Users.Any(r => r.Id == user.Id))
+            {
+                var record = Context.Users.First(r => r.Id == user.Id);
+
+                record.Salt = newSalt;
+                record.Hash = newPassword;
+
+                Context.SaveChanges();
+
+                return true;
+            }
+            return false;
         }
     }
 }

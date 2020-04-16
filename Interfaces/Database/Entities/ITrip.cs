@@ -9,5 +9,7 @@ namespace Interfaces.Database.Entities
         string TripName { get; set; }
 
         string TripDescription { get; set; }
+
+        DateTime DateTimeLastActivity { get; set; }
     }
 }

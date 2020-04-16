@@ -17,5 +17,11 @@ namespace Interfaces.Database.Repositories
         bool CheckIfUserExists(int id);
 
         void CreateAndAddUser(string username, string hash, string salt, string email, bool adminRights);
+
+        List<IUser> GetAllAdmins();
+
+        List<IUser> GetAllNonAdmins();
+
+        bool ChangePassword(IUser user, string newSalt, string newPassword);
     }
 }

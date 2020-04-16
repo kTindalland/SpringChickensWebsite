@@ -13,5 +13,7 @@ namespace Interfaces.Database.Entities
         string Title { get; set; }
 
         string BodyText { get; set; }
+
+        DateTime DateTimePosted { get; set; }
     }
 }

@@ -51,6 +51,15 @@
                                 </li>
                             }
                         }
+
+                        @{ 
+                            if (!Model.Layout_SignedIn)
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Reset" asp-action="Index">Forgot password</a>
+                                </li>
+                            }
+                        }
                     </ul>
 
                     @{

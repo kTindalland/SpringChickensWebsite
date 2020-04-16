@@ -44,6 +44,7 @@ namespace SpringChickens
             services.AddTransient<IUsernameFilterPredicate, UsernameFilterPredicate>();
             services.AddSingleton<ICredentialHoldingService, CredentialHoldingService>();
             services.AddSingleton<IViewModelFactory, ViewModelFactory>();
+            services.AddTransient<IPasswordResetService, PasswordResetService>();
 
             services.AddSession(options => options.IdleTimeout = TimeSpan.FromMinutes(5));
 
