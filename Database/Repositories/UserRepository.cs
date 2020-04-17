@@ -71,7 +71,8 @@ namespace Database.Repositories
                 UserName = username,
                 Hash = hash,
                 Salt = salt,
-                AdminRights = adminRights
+                AdminRights = adminRights,
+                Email = email
             };
 
             Context.Users.Add(newUser);
