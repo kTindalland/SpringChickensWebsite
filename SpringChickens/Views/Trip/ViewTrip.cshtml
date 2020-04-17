@@ -18,7 +18,7 @@ foreach (var post in Model.Posts)
         <div class="row card-body">
             <div class="col-sm">
 
-                @{ 
+                @{
                     var fullPath = Model.PathPrefix + post.PhotoFileName;
                 }
 
@@ -34,15 +34,19 @@ foreach (var post in Model.Posts)
             </div>
         </div>
 
-        <div class="card-footer">
-            <form asp-controller="Trip" asp-action="DeletePost" asp-route-tripId="@Model.Delete_TripId">
-                <input value="@post.Id" style="display: none" asp-for="Delete_Id" />
+        @if (Model.Layout_IsAdmin)
+        {
+            <div class="card-footer">
+                <form asp-controller="Trip" asp-action="DeletePost" asp-route-tripId="@Model.Delete_TripId">
+                    <input value="@post.Id" style="display: none" asp-for="Delete_Id" />
 
-                <button type="submit" class="btn btn-outline-danger">
-                    <span>&times;</span>
-                </button>
-            </form>
-        </div>
+                    <button type="submit" class="btn btn-outline-danger">
+                        <span>&times;</span>
+                    </button>
+                </form>
+            </div>
+        }
+
     </div>
 
     <br />

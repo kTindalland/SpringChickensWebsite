@@ -60,7 +60,7 @@ namespace SpringChickens.Controllers
             return View(vm);
         }
 
-        // TODO: Needs to be removed at some point.
+        // TODO: Needs to be removed at some point. apparently needed in trip controller
         public IActionResult Kai()
         {
             var vm = _viewModelFactory.Resolve<DogsViewModel>();

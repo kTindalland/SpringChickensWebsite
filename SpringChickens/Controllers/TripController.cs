@@ -9,6 +9,7 @@ using Interfaces.Database;
 using Microsoft.AspNetCore.Hosting;
 using Interfaces.Database.Entities;
 using Microsoft.AspNetCore.Routing;
+using Interfaces.Services;
 
 namespace SpringChickens.Controllers
 {
@@ -17,15 +18,18 @@ namespace SpringChickens.Controllers
         private readonly IViewModelFactory _viewModelFactory;
         private readonly IUnitOfWork _context;
         private readonly IWebHostEnvironment _env;
+        private readonly ICredentialHoldingService _credentialHoldingService;
 
         public TripController(
             IViewModelFactory viewModelFactory,
             IUnitOfWork context,
-            IWebHostEnvironment env)
+            IWebHostEnvironment env,
+            ICredentialHoldingService credentialHoldingService)
         {
             _viewModelFactory = viewModelFactory;
             _context = context;
             _env = env;
+            _credentialHoldingService = credentialHoldingService;
         }
 
         public IActionResult Index()
@@ -56,6 +60,8 @@ namespace SpringChickens.Controllers
         [HttpPost, ValidateAntiForgeryToken]
         public IActionResult DeletePost(TripViewModel vm, string tripId)
         {
+            if (!_credentialHoldingService.IsAdmin) return RedirectToRoute(new { controller = "Home", action = "Index" });
+
             if (vm.Delete_Id == 0)
                 return RedirectToAction("Index");
 

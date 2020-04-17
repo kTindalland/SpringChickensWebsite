@@ -14,6 +14,7 @@ using Interfaces.Database;
 using Interfaces.Database.Entities;
 using Interfaces.Factories;
 using SpringChickens.ViewModels;
+using Interfaces.Services;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -24,20 +25,27 @@ namespace SpringChickens.Controllers
         private IWebHostEnvironment _env;
         private IUnitOfWork _context;
         private readonly IViewModelFactory _viewModelFactory;
+        private readonly ICredentialHoldingService _credentialHoldingService;
 
         public FileUploadController(
             IWebHostEnvironment env,
             IUnitOfWork context,
-            IViewModelFactory viewModelFactory)
+            IViewModelFactory viewModelFactory,
+            ICredentialHoldingService credentialHoldingService)
         {
             _env = env;
             _context = context;
             _viewModelFactory = viewModelFactory;
+            _credentialHoldingService = credentialHoldingService;
         }
 
         // GET: /<controller>/
         public IActionResult Index()
         {
+            // Validate is admin
+            if (!_credentialHoldingService.IsAdmin) return RedirectToRoute(new { controller = "Home", action = "Index" });
+
+
             var vm = _viewModelFactory.Resolve<FileUploadViewModel>();
 
             var trips = _context.TripRepository.GetAllTrips().ToList();
@@ -55,6 +63,9 @@ namespace SpringChickens.Controllers
 
         public IActionResult AddNewTrip()
         {
+            // Validate is admin
+            if (!_credentialHoldingService.IsAdmin) return RedirectToRoute(new { controller = "Home", action = "Index" });
+
             var vm = _viewModelFactory.Resolve<AddNewTripViewModel>();
 
             return View(vm);
@@ -63,6 +74,9 @@ namespace SpringChickens.Controllers
         [HttpPost, ValidateAntiForgeryToken]
         public IActionResult SingleFile(FileUploadViewModel viewmodel)
         {
+            // Validate is admin
+            if (!_credentialHoldingService.IsAdmin) return RedirectToRoute(new { controller = "Home", action = "Index" });
+
             var dir = _env.WebRootPath;
 
             var file = viewmodel.File;
@@ -90,7 +104,8 @@ namespace SpringChickens.Controllers
         [HttpPost, ValidateAntiForgeryToken]
         public IActionResult CreateTrip(AddNewTripViewModel vm)
         {
-
+            // Validate is admin
+            if (!_credentialHoldingService.IsAdmin) return RedirectToRoute(new { controller = "Home", action = "Index" });
 
             return RedirectToAction("AddNewTrip");
         }
