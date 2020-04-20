@@ -1,0 +1,18 @@
+﻿using Interfaces.Database.Entities;
+using System;
+using System.Collections.Generic;
+using System.Net;
+using System.Text;
+
+namespace Interfaces.Database.Repositories
+{
+    public interface ICarouselItemRepository : IRepository<ICarouselItem>
+    {
+        void Update(ICarouselItem item);
+        void ActivateItem(int id);
+        void DeactivateItem(int id);
+        List<ICarouselItem> GetAllItems();
+        List<ICarouselItem> GetAllActiveItems();
+
+    }
+}

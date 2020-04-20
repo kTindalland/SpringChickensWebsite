@@ -1,0 +1,64 @@
+﻿
+@{
+    ViewData["Title"] = "Site Manager";
+}
+
+<div class="row">
+
+    <div class="col-md-3 border-right">
+        <!-- Welcome and description -->
+
+        <h2>Welcome to the site manager</h2>
+
+        <p>This is your administrative control panel where you can add and modify content on the site.</p>
+    </div>
+
+    <div class="col-md-9">
+        <!-- Card columns -->
+
+        <div class="card-columns">
+
+            <!-- Create a new trip -->
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Create a new trip</h5>
+                    <p class="card-text">This will take you to a page where you can create a new trip. Trips are what posts are contained within.</p>
+                    <a asp-controller="FileUpload" asp-action="AddNewTrip" class="card-link">Create Trip</a>
+                </div>
+            </div>
+
+            <!-- Create a new post -->
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Create a new post</h5>
+                    <p class="card-text">Here you can create a new post that will be attached to a trip. Trips can have images attached or can also be just a text post.</p>
+                    <a asp-controller="FileUpload" asp-action="Index" class="card-link">Create Post</a>
+                </div>
+            </div>
+
+            <!-- Create a new event -->
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Create a new calendar event</h5>
+                    <p class="card-text">Create a new event which will be shown on the "events" page <p class="text-danger">(WIP)</p></p>
+                    <a asp-controller="Home" asp-action="Index" class="card-link">Create Event</a>
+                </div>
+            </div>
+
+            <!-- Manage home carousel -->
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Manage carousel content</h5>
+                    <p class="card-text">
+                        This allows you to manage photos and captions that show up on the home page carousel.
+                        These are very important as they're the first impression your audience will have.
+                    <p class="text-danger">(WIP)</p></p>
+                    <a asp-controller="Admin" asp-action="CarouselManagement" class="card-link">Manage Carousel</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+</div>

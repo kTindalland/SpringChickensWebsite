@@ -11,8 +11,8 @@ namespace Database
         public DbSet<Trip> Trips { get; set; }
         public DbSet<Post> Posts { get; set; }
         public DbSet<User> Users { get; set; }
-
         public DbSet<ResetToken> ResetTokens { get; set; }
+        public DbSet<CarouselItem> CarouselItems { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

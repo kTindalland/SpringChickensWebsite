@@ -4,8 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Interfaces.Database;
 using Interfaces.Factories;
+using Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
 using SpringChickens.Factories;
+using SpringChickens.ViewModels;
 using SpringChickens.ViewModels.Admin;
 
 namespace SpringChickens.Controllers
@@ -14,18 +16,33 @@ namespace SpringChickens.Controllers
     {
         private IViewModelFactory _vmFactory;
         private readonly IUnitOfWork _context;
+        private readonly ICredentialHoldingService _credentialHoldingService;
 
-        public AdminController(IViewModelFactory vmFactory, IUnitOfWork context)
+        public AdminController(
+            IViewModelFactory vmFactory,
+            IUnitOfWork context,
+            ICredentialHoldingService credentialHoldingService)
         {
             _vmFactory = vmFactory;
             _context = context;
+            _credentialHoldingService = credentialHoldingService;
         }
 
-        public IActionResult ListUsers()
+        public IActionResult Index()
         {
-            var vm = _vmFactory.Resolve<ListUsersViewModel>();
-            vm.AdminUsers = _context.UserRepository.GetAllAdmins();
-            vm.NormalUsers = _context.UserRepository.GetAllNonAdmins();
+            // Validate is admin
+            if (!_credentialHoldingService.IsAdmin) return RedirectToRoute(new { controller = "Home", action = "Index" });
+
+            var vm = _vmFactory.Resolve<BaseViewModel>();
+
+            return View(vm);
+        }
+
+        public IActionResult CarouselManagement()
+        {
+            var vm = _vmFactory.Resolve<CarouselManagementViewModel>();
+            vm.AllCarouselItems = _context.CarouselItemRepository.GetAllItems();
+            vm.ActiveCarouselItems = _context.CarouselItemRepository.GetAllActiveItems();
 
             return View(vm);
         }

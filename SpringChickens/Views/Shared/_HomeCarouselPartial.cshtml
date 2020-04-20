@@ -1,0 +1,48 @@
+﻿@model List<Interfaces.Database.Entities.ICarouselItem>;
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@if (Model.Count > 0)
+{
+    <div id="homeCarousel" class="carousel slide" data-ride="carousel">
+        <!-- Indicators -->
+        <ol class="carousel-indicators">
+            @{
+                for (int i = 0; i < Model.Count; i++)
+                {
+                    var active = i == 0 ? "class=\"active\"" : "";
+                    <li data-target="#homeCarousel" data-slide-to="@i" @active></li>
+            }
+            }
+
+        </ol>
+
+        <!-- Items -->
+        <div class="carousel-inner">
+            @for (int i = 0; i < Model.Count; i++)
+            {
+                var item = Model[i];
+                
+                var active = i == 0 ? "active" : "";
+                <div class="carousel-item @active">
+                    <img src="~/carouselImages/@item.PhotoFilePath" class="d-block w-100" alt="...">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h5>@item.Title</h5>
+                        <p>@item.Description</p>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <!-- Side buttons -->
+        <a class="carousel-control-prev" href="#homeCarousel" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#homeCarousel" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
+}

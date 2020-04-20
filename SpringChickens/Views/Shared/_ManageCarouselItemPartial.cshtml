@@ -1,0 +1,22 @@
+﻿@model Interfaces.Database.Entities.ICarouselItem;
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+<table class="w-100 table table-bordered">
+    <tr>
+        <td rowspan="2">
+
+            <img src="~/carouselImages/@Model.PhotoFilePath" height="150px" />
+
+        </td>
+        <td>@Model.Title</td>
+        <td>Up</td>
+        <td>Delete</td>
+    </tr>
+    <tr>
+        <td>@Model.Description</td>
+        <td>Down</td>
+        <td>Deactivate/activate</td>
+    </tr>
+</table>

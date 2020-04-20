@@ -13,5 +13,6 @@ namespace Interfaces.Database
         ITripRepository TripRepository { get; }
         IPostRepository PostRepository { get; }
         IResetTokenRepository ResetTokenRepository { get; }
+        ICarouselItemRepository CarouselItemRepository { get; }
     }
 }

@@ -47,8 +47,9 @@ namespace SpringChickens.Controllers
 
         public IActionResult Index()
         {
-            var vm = _viewModelFactory.Resolve<BaseViewModel>();
+            var vm = _viewModelFactory.Resolve<HomeViewModel>();
 
+            vm.CarouselItems = _context.CarouselItemRepository.GetAllActiveItems();
 
             return View(vm);
         }

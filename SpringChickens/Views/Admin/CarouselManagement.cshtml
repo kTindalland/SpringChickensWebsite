@@ -1,0 +1,25 @@
+﻿@model SpringChickens.ViewModels.Admin.CarouselManagementViewModel;
+@{
+    ViewData["Title"] = "Carousel Management";
+}
+
+<div class="row">
+
+    <!-- Preview panel -->
+    <div class="col-md-5 mb-3">
+        <partial name="_HomeCarouselPartial" model="@Model.ActiveCarouselItems"/>
+    </div>
+
+    <!-- Management panel -->
+    <div class="col-md-7 mb-3">
+        @{ 
+            foreach (var item in Model.AllCarouselItems)
+            {
+                <partial name="_ManageCarouselItemPartial" model="@item" />
+            }
+        }
+
+
+    </div>
+
+</div>

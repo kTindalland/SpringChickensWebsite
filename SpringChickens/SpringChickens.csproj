@@ -23,4 +23,8 @@
     <ProjectReference Include="..\Interfaces\Interfaces.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="ViewModels\Partials\" />
+  </ItemGroup>
+
 </Project>

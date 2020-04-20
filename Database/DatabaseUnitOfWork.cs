@@ -15,6 +15,7 @@ namespace Database
         public ITripRepository TripRepository { get; }
         public IPostRepository PostRepository { get; }
         public IResetTokenRepository ResetTokenRepository { get; }
+        public ICarouselItemRepository CarouselItemRepository { get; }
 
         public DatabaseUnitOfWork()
         {
@@ -24,6 +25,7 @@ namespace Database
             TripRepository = new TripRepository(_context);
             PostRepository = new PostRepository(_context);
             ResetTokenRepository = new ResetTokenRepository(_context);
+            CarouselItemRepository = new CarouselItemRepository(_context);
         }
 
         public bool SaveChanges()
