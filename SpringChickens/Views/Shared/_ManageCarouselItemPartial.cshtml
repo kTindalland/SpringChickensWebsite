@@ -3,20 +3,25 @@
     For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 *@
 
-<table class="w-100 table table-bordered">
-    <tr>
-        <td rowspan="2">
+<div class="card">
+    <img src="~/carouselImages/@Model.PhotoFilePath" class="card-img" />
+    <div class="card-body">
+        <h2 class="card-title">@Model.Title</h2>
+        <p class="card-text">@Model.Description</p>
 
-            <img src="~/carouselImages/@Model.PhotoFilePath" height="150px" />
+        <div class="btn-group-vertical" role="group">
+            <a asp-controller="Admin" asp-action="CarouselMoveUp" asp-route-id="@Model.Id" class="btn btn-secondary">Move up</a>
+            <a asp-controller="Admin" asp-action="CarouselMoveDown" asp-route-id="@Model.Id" class="btn btn-secondary">Move down</a>
+        </div>
 
-        </td>
-        <td>@Model.Title</td>
-        <td>Up</td>
-        <td>Delete</td>
-    </tr>
-    <tr>
-        <td>@Model.Description</td>
-        <td>Down</td>
-        <td>Deactivate/activate</td>
-    </tr>
-</table>
+        <div class="btn-group-vertical" role="group">
+            <a asp-controller="Admin" asp-action="CarouselDelete" asp-route-id="@Model.Id" class="btn btn-danger">Delete</a>
+
+            @{ 
+                var buttonColour = Model.IsActive ? "btn-warning" : "btn-success";
+                var buttonText = Model.IsActive ? "De-activate" : "Activate";
+            }
+            <a asp-controller="Admin" asp-action="CarouselFlipActivation" asp-route-id="@Model.Id" class="btn @buttonColour">@buttonText</a>
+        </div>
+    </div>
+</div>

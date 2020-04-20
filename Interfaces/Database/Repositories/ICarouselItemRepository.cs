@@ -11,6 +11,9 @@ namespace Interfaces.Database.Repositories
         void Update(ICarouselItem item);
         void ActivateItem(int id);
         void DeactivateItem(int id);
+        void FlipActivation(int id);
+        void MoveItemUp(int id);
+        void MoveItemDown(int id);
         List<ICarouselItem> GetAllItems();
         List<ICarouselItem> GetAllActiveItems();
 

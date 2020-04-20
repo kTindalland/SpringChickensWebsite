@@ -24,7 +24,7 @@ namespace Database.Repositories
         public void Update(ICarouselItem item)
         {
             Context.CarouselItems.Update((CarouselItem)item);
-            Context.SaveChangesAsync();
+            Context.SaveChanges();
         }
 
         public bool Add(ICarouselItem entity)
@@ -40,7 +40,7 @@ namespace Database.Repositories
                 var record = Context.CarouselItems.First(r => r.Id == id);
 
                 record.IsActive = value;
-                Context.SaveChangesAsync();
+                Context.SaveChanges();
             }
         }
 
@@ -66,6 +66,73 @@ namespace Database.Repositories
             var result = Context.CarouselItems.Where(r => r.IsActive).OrderBy(r => r.Position).ToList<ICarouselItem>();
 
             return result;
+        }
+
+        public void FlipActivation(int id)
+        {
+            // validate item exists
+            if (!Context.CarouselItems.Any(r => r.Id == id))
+            {
+                return;
+            }
+
+            // get item
+            var record = Context.CarouselItems.First(r => r.Id == id);
+
+            record.IsActive = !record.IsActive;
+            Context.SaveChanges();
+        }
+
+        public void MoveItemUp(int id)
+        {
+            // validate item exists
+            if (!Context.CarouselItems.Any(r => r.Id == id))
+            {
+                return;
+            }
+
+            // get item
+            var record = Context.CarouselItems.First(r => r.Id == id);
+
+            // Check there's space above it
+            if ((record.Position - 1) <= 0)
+            {
+                return;
+            }
+
+            // Get record above current
+            var aboveRecord = Context.CarouselItems.First(r => r.Position == record.Position - 1);
+
+            record.Position--;
+            aboveRecord.Position++;
+
+            Context.SaveChanges();
+        }
+
+        public void MoveItemDown(int id)
+        {
+            // validate item exists
+            if (!Context.CarouselItems.Any(r => r.Id == id))
+            {
+                return;
+            }
+
+            // get item
+            var record = Context.CarouselItems.First(r => r.Id == id);
+
+            // Check there's space below it
+            if ((record.Position + 1) > Context.CarouselItems.Count())
+            {
+                return;
+            }
+
+            // Get record below current
+            var belowRecord = Context.CarouselItems.First(r => r.Position == record.Position + 1);
+
+            record.Position++;
+            belowRecord.Position--;
+
+            Context.SaveChanges();
         }
     }
 }

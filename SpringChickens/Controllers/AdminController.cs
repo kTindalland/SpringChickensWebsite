@@ -28,6 +28,15 @@ namespace SpringChickens.Controllers
             _credentialHoldingService = credentialHoldingService;
         }
 
+        private CarouselManagementViewModel ResolveViewModel()
+        {
+            var vm = _vmFactory.Resolve<CarouselManagementViewModel>();
+            vm.AllCarouselItems = _context.CarouselItemRepository.GetAllItems();
+            vm.ActiveCarouselItems = _context.CarouselItemRepository.GetAllActiveItems();
+
+            return vm;
+        }
+
         public IActionResult Index()
         {
             // Validate is admin
@@ -40,11 +49,41 @@ namespace SpringChickens.Controllers
 
         public IActionResult CarouselManagement()
         {
-            var vm = _vmFactory.Resolve<CarouselManagementViewModel>();
-            vm.AllCarouselItems = _context.CarouselItemRepository.GetAllItems();
-            vm.ActiveCarouselItems = _context.CarouselItemRepository.GetAllActiveItems();
-
-            return View(vm);
+            return View(ResolveViewModel());
         }
+
+        #region Carousel Actions
+
+        public IActionResult CarouselMoveUp(int id)
+        {
+            _context.CarouselItemRepository.MoveItemUp(id);
+
+            return View("CarouselManagement", ResolveViewModel());
+        }
+
+        public IActionResult CarouselMoveDown(int id)
+        {
+            _context.CarouselItemRepository.MoveItemDown(id);
+
+            return View("CarouselManagement", ResolveViewModel());
+        }
+
+        public IActionResult CarouselDelete(int id)
+        {
+
+
+            return View("CarouselManagement", ResolveViewModel());
+        }
+
+        public IActionResult CarouselFlipActivation(int id)
+        {
+            _context.CarouselItemRepository.FlipActivation(id);
+
+            return View("CarouselManagement", ResolveViewModel());
+        }
+
+        #endregion
+
+
     }
 }

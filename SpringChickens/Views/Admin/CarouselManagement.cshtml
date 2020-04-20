@@ -5,17 +5,33 @@
 
 <div class="row">
 
-    <!-- Preview panel -->
-    <div class="col-md-5 mb-3">
-        <partial name="_HomeCarouselPartial" model="@Model.ActiveCarouselItems"/>
+    <!-- Create and preview panel -->
+    <div class="col-md-7 mb-3 border-right">
+        @if (Model.AllCarouselItems.Count < 7)
+        {
+            <h2>Create new carousel item:</h2>
+            <a asp-controller="FileUpload" asp-action="UploadCarouselItem" class="btn btn-success">Create new item</a>
+
+        }
+        else
+        {
+            <h2>Limit Reached</h2>
+            <p>You cannot have more than 7 carousel items at a time. Consider deleting some to free space for new items.</p>
+        }
+        <br />
+        <br />
+
+        <h2>Preview:</h2>
+        <partial name="_HomeCarouselPartial" model="@Model.ActiveCarouselItems" />
     </div>
 
     <!-- Management panel -->
-    <div class="col-md-7 mb-3">
+    <div class="col-md-5 mb-3">
         @{ 
             foreach (var item in Model.AllCarouselItems)
             {
                 <partial name="_ManageCarouselItemPartial" model="@item" />
+                <br />
             }
         }
 
