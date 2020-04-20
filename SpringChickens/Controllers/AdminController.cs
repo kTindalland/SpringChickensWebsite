@@ -49,6 +49,9 @@ namespace SpringChickens.Controllers
 
         public IActionResult CarouselManagement()
         {
+            // Validate is admin
+            if (!_credentialHoldingService.IsAdmin) return RedirectToRoute(new { controller = "Home", action = "Index" });
+
             return View(ResolveViewModel());
         }
 
@@ -56,30 +59,40 @@ namespace SpringChickens.Controllers
 
         public IActionResult CarouselMoveUp(int id)
         {
+            // Validate is admin
+            if (!_credentialHoldingService.IsAdmin) return RedirectToRoute(new { controller = "Home", action = "Index" });
+
             _context.CarouselItemRepository.MoveItemUp(id);
 
-            return View("CarouselManagement", ResolveViewModel());
+            return RedirectToAction("CarouselManagement");
         }
 
         public IActionResult CarouselMoveDown(int id)
         {
+            // Validate is admin
+            if (!_credentialHoldingService.IsAdmin) return RedirectToRoute(new { controller = "Home", action = "Index" });
+
             _context.CarouselItemRepository.MoveItemDown(id);
 
-            return View("CarouselManagement", ResolveViewModel());
+            return RedirectToAction("CarouselManagement");
         }
 
         public IActionResult CarouselDelete(int id)
         {
+            // Validate is admin
+            if (!_credentialHoldingService.IsAdmin) return RedirectToRoute(new { controller = "Home", action = "Index" });
 
-
-            return View("CarouselManagement", ResolveViewModel());
+            return RedirectToAction("CarouselManagement");
         }
 
         public IActionResult CarouselFlipActivation(int id)
         {
+            // Validate is admin
+            if (!_credentialHoldingService.IsAdmin) return RedirectToRoute(new { controller = "Home", action = "Index" });
+
             _context.CarouselItemRepository.FlipActivation(id);
 
-            return View("CarouselManagement", ResolveViewModel());
+            return RedirectToAction("CarouselManagement");
         }
 
         #endregion
