@@ -81,7 +81,6 @@ namespace SpringChickens.Controllers
                 vm.Dogs.Add(newDog);
             }
 
-
             return View(vm);
         }
 
