@@ -13,6 +13,7 @@ namespace Database
         public DbSet<User> Users { get; set; }
         public DbSet<ResetToken> ResetTokens { get; set; }
         public DbSet<CarouselItem> CarouselItems { get; set; }
+        public DbSet<CalendarEvent> CalendarEvents { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

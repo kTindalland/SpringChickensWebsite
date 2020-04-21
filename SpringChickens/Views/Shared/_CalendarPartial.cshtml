@@ -1,0 +1,93 @@
+﻿@model SpringChickens.ViewModels.Partials.CalendarViewModel;
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+    <div class="card border-0">
+        <div class="card-header">
+            <div class="text-center text-white">
+                <div class="btn-group text-center" style="width : 285px; padding : 15px">
+                    @{
+                        var backYear = Model.Year;
+                        var backMonth = Model.MonthNumber - 1;
+
+                        if (backMonth <= 0)
+                        {
+                            backMonth = 12;
+                            backYear--;
+                        }
+
+                        var nextYear = Model.Year;
+                        var nextMonth = Model.MonthNumber + 1;
+
+                        if (nextMonth > 12)
+                        {
+                            nextMonth = 1;
+                            nextYear++;
+                        }
+                        
+                    }
+                    <a class="btn btn-secondary text-center" asp-route-year="@backYear" asp-route-month="@backMonth"><= Back</a>
+                    <a class="btn btn-secondary text-center" asp-route-year="-1" asp-route-month="-1">Today</a>
+                    <a class="btn btn-secondary text-center" asp-route-year="@nextYear" asp-route-month="@nextMonth">Next =></a>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+
+            <div class="jzdbox1 jzdbasf jzdcal">
+
+                <div class="jzdcalt">@Model.Month @Model.Year</div>
+
+                <span>Su</span>
+                <span>Mo</span>
+                <span>Tu</span>
+                <span>We</span>
+                <span>Th</span>
+                <span>Fr</span>
+                <span>Sa</span>
+
+
+                @for (int i = 0; i < Model.InitialOffset; i++)
+                {
+                    <span class="jzdb"><!--BLANK--></span>
+                }
+
+                @for (int i = 1; i <= Model.DaysInMonth; i++)
+                {
+                    if (Model.Events.Any(r => r.Date.Date.Day == i))
+                    {
+                        // Get the record
+                        var record = Model.Events.First(r => r.Date.Date.Day == i);
+
+                        <span class="circle" data-title="@record.Description">@i</span>
+                    }
+                    else
+                    {
+                        <span>@i</span>
+                    }
+                }
+
+                @{
+                    // Work out how many blanks on the end
+                    var realDaysInFirstWeek = 7 - Model.InitialOffset;
+
+                    var remainingDays = Model.DaysInMonth - realDaysInFirstWeek;
+
+                    var remainingAtEnd = remainingDays % 7;
+
+                    var amountOfBlanks = 7 - remainingAtEnd;
+                }
+
+                @for (int i = 0; i < amountOfBlanks; i++)
+                {
+                    <span class="jzdb"><!--BLANK--></span>
+                }
+
+            </div>
+
+        </div>
+
+    </div>
+
+    

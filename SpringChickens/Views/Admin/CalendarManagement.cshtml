@@ -1,0 +1,20 @@
+﻿@model SpringChickens.ViewModels.Admin.CalendarManagementViewModel;
+@{
+    ViewData["Title"] = "Calendar Management";
+    ViewData["ShowOutdated"] = Model.ShowOutdatedEvents;
+}
+
+
+    <div class="row">
+        <div class="col-md-2">
+
+        </div>
+        <div class="col-md-4 border-right">
+            <partial name="_CalendarPartial" model="Model.CalendarVM" />
+        </div>
+        <div class="col-md-4">
+            <partial name="_CalendarEventListPartial" model="Model.AllCalendarEvents" view-data="ViewData" />
+        </div>
+    </div>
+
+    

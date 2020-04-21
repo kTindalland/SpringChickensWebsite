@@ -14,5 +14,6 @@ namespace Interfaces.Database
         IPostRepository PostRepository { get; }
         IResetTokenRepository ResetTokenRepository { get; }
         ICarouselItemRepository CarouselItemRepository { get; }
+        ICalendarEventRepository CalendarEventRepository { get; }
     }
 }
