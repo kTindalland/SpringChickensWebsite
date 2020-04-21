@@ -15,6 +15,7 @@ using Interfaces.Database.Entities;
 using Interfaces.Factories;
 using SpringChickens.ViewModels;
 using Interfaces.Services;
+using SpringChickens.ViewModels.FileUpload;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -80,10 +81,10 @@ namespace SpringChickens.Controllers
             var dir = _env.WebRootPath;
 
             var file = viewmodel.File;
-            // Add name validation.
+            var filename = DateTime.Now.Ticks.ToString() + file.FileName;
 
 
-            using (var fileStream = new FileStream($"{dir}/images/{viewmodel.File.FileName}", FileMode.Create, FileAccess.ReadWrite))
+            using (var fileStream = new FileStream($"{dir}/images/{filename}", FileMode.Create, FileAccess.ReadWrite))
             {
                 file.CopyTo(fileStream);
             }
@@ -91,7 +92,7 @@ namespace SpringChickens.Controllers
 
             var firstTripId = _context.TripRepository.GetFirstTripId();
 
-            _context.PostRepository.CreateAndAddNewPost(viewmodel.Title, viewmodel.Description, file.FileName, firstTripId);
+            _context.PostRepository.CreateAndAddNewPost(viewmodel.Title, viewmodel.Description, filename, firstTripId);
 
 
             _context.SaveChanges();
@@ -108,6 +109,39 @@ namespace SpringChickens.Controllers
             if (!_credentialHoldingService.IsAdmin) return RedirectToRoute(new { controller = "Home", action = "Index" });
 
             return RedirectToAction("AddNewTrip");
+        }
+
+        public IActionResult UploadCarouselItem()
+        {
+            // Validate is admin
+            if (!_credentialHoldingService.IsAdmin) return RedirectToRoute(new { controller = "Home", action = "Index" });
+
+            var vm = _viewModelFactory.Resolve<CreateNewCarouselItemViewModel>();
+
+            return View(vm);
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public IActionResult UploadCarouselItem(CreateNewCarouselItemViewModel viewmodel)
+        {
+            // Validate is admin
+            if (!_credentialHoldingService.IsAdmin) return RedirectToRoute(new { controller = "Home", action = "Index" });
+
+            var dir = _env.WebRootPath;
+
+            var file = viewmodel.PhotoFile;
+            var filename = DateTime.Now.Ticks.ToString()+file.FileName;
+
+
+            using (var fileStream = new FileStream($"{dir}/carouselImages/{filename}", FileMode.Create, FileAccess.ReadWrite))
+            {
+                file.CopyTo(fileStream);
+            }
+
+            // Create the carousel item record
+            _context.CarouselItemRepository.CreateNewCarouselItem(viewmodel.Title, viewmodel.Description, filename);
+
+            return RedirectToRoute(new { controller = "Admin", action = "CarouselManagement" });
         }
     }
 }

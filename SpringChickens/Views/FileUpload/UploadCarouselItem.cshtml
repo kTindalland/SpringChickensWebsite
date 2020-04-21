@@ -1,0 +1,28 @@
+﻿@model SpringChickens.ViewModels.FileUpload.CreateNewCarouselItemViewModel
+@{
+    ViewData["Title"] = "New Carousel Item";
+}
+
+<div class="col-md-3">
+
+</div>
+<div class="col-md-6">
+    <form asp-controller="FileUpload" asp-action="UploadCarouselItem" enctype="multipart/form-data" method="post">
+        <div class="form-group">
+            <label>Title</label>
+            <input required type="text" class="form-control" placeholder="Title.." asp-for="Title" />
+        </div>
+
+        <div class="form-group">
+            <label>Caption</label>
+            <textarea required type="text" class="form-control" placeholder="Caption.." asp-for="Description"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label>Photo</label>
+            <input required class="form-control-file" type="file" asp-for="PhotoFile" accept="image/jpg, image/jpeg, image/png" />
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>

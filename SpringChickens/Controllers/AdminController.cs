@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Interfaces.Database;
 using Interfaces.Factories;
 using Interfaces.Services;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using SpringChickens.Factories;
 using SpringChickens.ViewModels;
@@ -17,15 +18,18 @@ namespace SpringChickens.Controllers
         private IViewModelFactory _vmFactory;
         private readonly IUnitOfWork _context;
         private readonly ICredentialHoldingService _credentialHoldingService;
+        private readonly IWebHostEnvironment _env;
 
         public AdminController(
             IViewModelFactory vmFactory,
             IUnitOfWork context,
-            ICredentialHoldingService credentialHoldingService)
+            ICredentialHoldingService credentialHoldingService,
+            IWebHostEnvironment env)
         {
             _vmFactory = vmFactory;
             _context = context;
             _credentialHoldingService = credentialHoldingService;
+            _env = env;
         }
 
         private CarouselManagementViewModel ResolveViewModel()
@@ -81,6 +85,18 @@ namespace SpringChickens.Controllers
         {
             // Validate is admin
             if (!_credentialHoldingService.IsAdmin) return RedirectToRoute(new { controller = "Home", action = "Index" });
+
+            // Delete photo if it exists
+            var filename = _context.CarouselItemRepository.GetPhotoFileName(id);
+            if (filename != "RecordNonExistant")
+            {
+                System.IO.File.Delete($"{ _env.WebRootPath}/carouselImages/{filename}");
+            }
+
+            // Delete record by id
+            _context.CarouselItemRepository.DeleteItem(id);
+
+            
 
             return RedirectToAction("CarouselManagement");
         }

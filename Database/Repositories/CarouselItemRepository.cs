@@ -134,5 +134,51 @@ namespace Database.Repositories
 
             Context.SaveChanges();
         }
+
+        public void CreateNewCarouselItem(string title, string description, string photoFileName)
+        {
+            // Get the last position
+            var lastPosition = Context.CarouselItems.Count() + 1;
+
+            // Create the record
+            var record = new CarouselItem()
+            {
+                Title = title,
+                Description = description,
+                PhotoFilePath = photoFileName,
+                IsActive = true,
+                Position = lastPosition
+            };
+
+            Context.CarouselItems.Add(record);
+            Context.SaveChanges();
+        }
+
+        public void DeleteItem(int id)
+        {
+            // get the record if it exists
+            if (!Context.CarouselItems.Any(r =>r.Id == id))
+            {
+                return;
+            }
+
+            var record = Context.CarouselItems.First(r => r.Id == id);
+
+            Context.Remove(record);
+            Context.SaveChanges();
+        }
+
+        public string GetPhotoFileName(int id)
+        {
+            // get the record if it exists
+            if (!Context.CarouselItems.Any(r => r.Id == id))
+            {
+                return "RecordNonExistant";
+            }
+
+            var record = Context.CarouselItems.First(r => r.Id == id);
+
+            return record.PhotoFilePath;
+        }
     }
 }

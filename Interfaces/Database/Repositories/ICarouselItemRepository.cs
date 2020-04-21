@@ -16,6 +16,8 @@ namespace Interfaces.Database.Repositories
         void MoveItemDown(int id);
         List<ICarouselItem> GetAllItems();
         List<ICarouselItem> GetAllActiveItems();
-
+        void CreateNewCarouselItem(string title, string description, string photoFileName);
+        void DeleteItem(int id);
+        string GetPhotoFileName(int id);
     }
 }
