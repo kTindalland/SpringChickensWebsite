@@ -24,19 +24,22 @@ namespace SpringChickens.Controllers
         private readonly ICredentialHoldingService _credentialHoldingService;
         private readonly IWebHostEnvironment _env;
         private readonly ICalendarHelpingService _calendarHelpingService;
+        private readonly ISearchUsersService _searchUsersService;
 
         public AdminController(
             IViewModelFactory vmFactory,
             IUnitOfWork context,
             ICredentialHoldingService credentialHoldingService,
             IWebHostEnvironment env,
-            ICalendarHelpingService calendarHelpingService)
+            ICalendarHelpingService calendarHelpingService,
+            ISearchUsersService searchUsersService)
         {
             _vmFactory = vmFactory;
             _context = context;
             _credentialHoldingService = credentialHoldingService;
             _env = env;
             _calendarHelpingService = calendarHelpingService;
+            _searchUsersService = searchUsersService;
         }
 
         private CarouselManagementViewModel ResolveViewModel()
@@ -272,6 +275,42 @@ namespace SpringChickens.Controllers
             _context.HomeTextRepository.UpdateBody(vm.Body);
 
             return RedirectToAction("Index");
+        }
+
+        public IActionResult PromoteUser(string searchTerm = ".")
+        {
+            // Validate is admin
+            if (!_credentialHoldingService.IsAdmin) return RedirectToRoute(new { controller = "Home", action = "Index" });
+
+            var vm = _vmFactory.Resolve<PromoteUserViewModel>();
+
+            var allUsers = _context.UserRepository.GetAllUsers();
+
+            var trimmedUsers = _searchUsersService.SearchUsers(allUsers, searchTerm);
+
+            vm.Users = trimmedUsers;
+            vm.SearchString = searchTerm;
+
+            return View(vm);
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public IActionResult SearchUser(PromoteUserViewModel vm)
+        {
+            // Validate is admin
+            if (!_credentialHoldingService.IsAdmin) return RedirectToRoute(new { controller = "Home", action = "Index" });
+
+            return RedirectToRoute(new { controller = "Admin", action = "PromoteUser", searchTerm = vm.SearchString });
+        }
+
+        public IActionResult ChangeAdminRights(int id, bool admin, string searchTerm)
+        {
+            // Validate is admin
+            if (!_credentialHoldingService.IsAdmin) return RedirectToRoute(new { controller = "Home", action = "Index" });
+
+            _context.UserRepository.ChangeAdminStatus(id, admin);
+
+            return RedirectToRoute(new { controller = "Admin", action = "PromoteUser", searchTerm = searchTerm });
         }
     }
 }

@@ -107,5 +107,30 @@ namespace Database.Repositories
             }
             return false;
         }
+
+        public List<IUser> GetAllUsers()
+        {
+            var allRecords = Context.Users.ToList<IUser>();
+
+            return allRecords;
+        }
+
+        public void ChangeAdminStatus(int id, bool adminStatus)
+        {
+            // Get if exists
+            IUser user;
+            var valid = GetUserIfExists(id, out user);
+
+            // Exit out if not a valid user
+            if (!valid) return;
+
+            // valid, so change admin status
+
+            user.AdminRights = adminStatus;
+
+            Context.Users.Update((User)user);
+
+            Context.SaveChanges();
+        }
     }
 }

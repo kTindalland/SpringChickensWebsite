@@ -1,0 +1,91 @@
+﻿@model SpringChickens.ViewModels.Admin.PromoteUserViewModel;
+@{
+    ViewData["Title"] = "PromoteUser";
+}
+
+<div class="row">
+
+    <!-- Search functionality? -->
+    <div class="col-md-4 mb-3">
+
+        <div class="card">
+
+            <h2 class="card-header">Search User</h2>
+
+            <div class="card-body">
+
+                <form asp-controller="Admin" asp-action="SearchUser">
+
+                    <div class="form-group">
+                        <label>Username</label>
+                        <input class="form-control" placeholder="Username you're searching for..." asp-for="SearchString" value="" />
+                    </div>
+
+                    <button class="btn btn-secondary" type="submit">Search</button>
+                    <a class="btn btn-success" asp-route-searchTerm=".">All</a>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- List users -->
+    <div class="col-md-8">
+
+        <div class="card">
+
+            <h2 class="card-header text-center">Promote User</h2>
+
+            <div class="card-body">
+
+                <ul class="list-group-flush">
+
+                    @{
+
+                        foreach (var user in Model.Users)
+                        {
+                            <li class="list-group-item">
+                                
+                                <div class="row">
+
+                                    <div class="col-sm">
+                                        <h4>@user.UserName</h4>
+                                    </div>
+
+                                    @if (user.AdminRights)
+                                    {
+                                        // Demote
+                                        <div class="col-sm">
+                                            <a class="btn btn-danger" asp-controller="Admin" asp-action="ChangeAdminRights" asp-route-id="@user.Id" asp-route-admin="false" asp-route-searchTerm="@Model.SearchString">Demote</a>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        // Promote
+                                        <div class="col-sm">
+                                            <a class="btn btn-warning" asp-controller="Admin" asp-action="ChangeAdminRights" asp-route-id="@user.Id" asp-route-admin="true" asp-route-searchTerm="@Model.SearchString">Promote</a>
+                                        </div>
+                                    }
+
+
+                                </div>
+
+                            </li>
+                        }
+
+                    }
+
+
+
+                </ul>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

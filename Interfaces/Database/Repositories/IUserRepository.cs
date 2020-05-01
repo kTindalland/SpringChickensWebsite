@@ -23,5 +23,9 @@ namespace Interfaces.Database.Repositories
         List<IUser> GetAllNonAdmins();
 
         bool ChangePassword(IUser user, string newSalt, string newPassword);
+
+        List<IUser> GetAllUsers();
+
+        void ChangeAdminStatus(int id, bool adminStatus);
     }
 }
