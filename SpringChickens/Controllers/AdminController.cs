@@ -247,5 +247,31 @@ namespace SpringChickens.Controllers
 
             return RedirectToAction("Calendar");
         }
+
+        public IActionResult HomeText()
+        {
+            // Validate is admin
+            if (!_credentialHoldingService.IsAdmin) return RedirectToRoute(new { controller = "Home", action = "Index" });
+
+            var vm = _vmFactory.Resolve<HomeTextViewModel>();
+
+            // Populate vm
+            vm.Title = _context.HomeTextRepository.GetTitle();
+            vm.Body = _context.HomeTextRepository.GetBody();
+
+            return View(vm);            
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public IActionResult EditHomeText(HomeTextViewModel vm)
+        {
+            // Validate is admin
+            if (!_credentialHoldingService.IsAdmin) return RedirectToRoute(new { controller = "Home", action = "Index" });
+
+            _context.HomeTextRepository.UpdateTitle(vm.Title);
+            _context.HomeTextRepository.UpdateBody(vm.Body);
+
+            return RedirectToAction("Index");
+        }
     }
 }

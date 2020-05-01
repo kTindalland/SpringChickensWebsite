@@ -56,6 +56,8 @@ namespace SpringChickens.Controllers
             var vm = _viewModelFactory.Resolve<HomeViewModel>();
 
             vm.CarouselItems = _context.CarouselItemRepository.GetAllActiveItems();
+            vm.HomeTextTitle = _context.HomeTextRepository.GetTitle();
+            vm.HomeTextBody = _context.HomeTextRepository.GetBody();
 
             return View(vm);
         }

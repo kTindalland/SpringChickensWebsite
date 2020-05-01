@@ -1,0 +1,31 @@
+﻿@model SpringChickens.ViewModels.Admin.HomeTextViewModel;
+@{
+    ViewData["Title"] = "Edit Home Text";
+}
+
+<div class="row">
+
+    <div class="col-md-3"></div>
+
+    <div class="col-md-6">
+
+        <form asp-controller="Admin" asp-action="EditHomeText">
+
+            <div class="form-group">
+                <label>Title</label>
+                <input type="text" class="form-control" value="@Model.Title" asp-for="Title" required />
+            </div>
+
+            <div class="form-group">
+                <label>Body</label>
+                <textarea rows="10" type="text" class="form-control" value="@Model.Body" asp-for="Body" required></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-success">Submit</button>
+
+        </form>
+
+    </div>
+
+</div>
+

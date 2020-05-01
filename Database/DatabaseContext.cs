@@ -14,6 +14,7 @@ namespace Database
         public DbSet<ResetToken> ResetTokens { get; set; }
         public DbSet<CarouselItem> CarouselItems { get; set; }
         public DbSet<CalendarEvent> CalendarEvents { get; set; }
+        public DbSet<HomeText> HomeTexts { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

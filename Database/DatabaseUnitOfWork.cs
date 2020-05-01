@@ -17,6 +17,7 @@ namespace Database
         public IResetTokenRepository ResetTokenRepository { get; }
         public ICarouselItemRepository CarouselItemRepository { get; }
         public ICalendarEventRepository CalendarEventRepository { get; }
+        public IHomeTextRepository HomeTextRepository { get; }
 
         public DatabaseUnitOfWork()
         {
@@ -28,6 +29,7 @@ namespace Database
             ResetTokenRepository = new ResetTokenRepository(_context);
             CarouselItemRepository = new CarouselItemRepository(_context);
             CalendarEventRepository = new CalendarEventRepository(_context);
+            HomeTextRepository = new HomeTextRepository(_context);
         }
 
         public bool SaveChanges()
