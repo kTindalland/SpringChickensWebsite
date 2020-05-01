@@ -1,4 +1,5 @@
 ﻿@model List<Interfaces.Database.Entities.ICalendarEvent>;
+@using System.Globalization;
 @*
     For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 *@
@@ -13,7 +14,7 @@
 
     <div class="card-header">
          <h3>@headerTitle</h3>
-         <a class="btn btn-warning text-right" asp-route-showOutdatedEvents="@buttonRouteText">@buttonText</a>
+         <a class="btn btn-warning text-right" asp-controller="@ViewData["routeController"]" asp-action="ToggleShowOutdated">@buttonText</a>
     </div>
 
     <div class="card-body">
@@ -25,10 +26,16 @@
 
                     @foreach (var item in Model)
                     {
-                        <li class="list-group-item">
-                            <h4>@item.Date.Month.ToString("MMMM") @item.Date.Day @item.Date.Year</h4>
-                            <p>@item.Description</p>
-                        </li>
+                    <li class="list-group-item">
+                        <h4>@item.Date.ToString("MMMM dd yyyy", CultureInfo.InvariantCulture)</h4>
+                        <p>@item.Description</p>
+
+                        @if ((string)ViewData["routeController"] == "Admin")
+                        {
+                            <a class="btn btn-danger" asp-controller="Admin" asp-action="DeleteEvent" asp-route-id="@item.Id">Delete</a>
+                        }
+
+                    </li>
                     }
                 </ul>
             }

@@ -2,6 +2,7 @@
 @{
     ViewData["Title"] = "Calendar Management";
     ViewData["ShowOutdated"] = Model.ShowOutdatedEvents;
+    ViewData["routeController"] = "Admin";
 }
 
 
@@ -10,7 +11,8 @@
 
         </div>
         <div class="col-md-4 border-right">
-            <partial name="_CalendarPartial" model="Model.CalendarVM" />
+            <a class="btn btn-success mb-3" asp-controller="Admin" asp-action="CreateNewEvent">Create Event</a>
+            <partial name="_CalendarPartial" model="Model.CalendarVM" view-data="ViewData" />
         </div>
         <div class="col-md-4">
             <partial name="_CalendarEventListPartial" model="Model.AllCalendarEvents" view-data="ViewData" />

@@ -17,6 +17,9 @@ using Interfaces.Database;
 using Interfaces.Database.Entities;
 using Interfaces.Factories;
 using Interfaces.ViewModels;
+using SpringChickens.ViewModels.Admin;
+using SpringChickens.ViewModels.Partials;
+using System.Globalization;
 
 namespace SpringChickens.Controllers
 {
@@ -28,6 +31,7 @@ namespace SpringChickens.Controllers
         private readonly ICredentialHoldingService _credentialHoldingService;
         private readonly IViewModelFactory _viewModelFactory;
         private readonly IPasswordResetService _passwordResetService;
+        private readonly ICalendarHelpingService _calendarHelpingService;
 
         public HomeController(
             IWebHostEnvironment env,
@@ -35,7 +39,8 @@ namespace SpringChickens.Controllers
             IUnitOfWork context,
             ICredentialHoldingService credentialHoldingService,
             IViewModelFactory viewModelFactory,
-            IPasswordResetService passwordResetService)
+            IPasswordResetService passwordResetService,
+            ICalendarHelpingService calendarHelpingService)
         {
             _env = env;
             _userService = userService;
@@ -43,6 +48,7 @@ namespace SpringChickens.Controllers
             _credentialHoldingService = credentialHoldingService;
             _viewModelFactory = viewModelFactory;
             _passwordResetService = passwordResetService;
+            _calendarHelpingService = calendarHelpingService;
         }
 
         public IActionResult Index()
@@ -188,6 +194,81 @@ namespace SpringChickens.Controllers
             }
 
             return RedirectToAction("Kai");
+        }
+
+        public IActionResult Calendar()
+        {
+            var year = _calendarHelpingService.Year;
+            var month = _calendarHelpingService.Month;
+            var showOutdatedEvents = _calendarHelpingService.ShowOutdatedEvents;
+
+            var vm = _viewModelFactory.Resolve<CalendarManagementViewModel>();
+
+            DateTime now;
+            List<ICalendarEvent> events;
+
+            if (year < 1 || month < 1)
+            {
+                now = DateTime.Now;
+
+                events = _context.CalendarEventRepository.GetThisMonthsEvents();
+            }
+            else
+            {
+                now = new DateTime(year, month, 1);
+                events = _context.CalendarEventRepository.GetSpecifiedMonthsEvents(year, month);
+            }
+
+            if (showOutdatedEvents)
+            {
+                vm.ShowOutdatedEvents = true;
+                vm.AllCalendarEvents = _context.CalendarEventRepository.GetAllEvents().OrderBy(r => r.Date.Ticks).ToList();
+            }
+            else
+            {
+                vm.ShowOutdatedEvents = false;
+                var currentDate = DateTime.Now;
+                vm.AllCalendarEvents = _context.CalendarEventRepository.GetEventsAfterDate(currentDate.Year, currentDate.Month).OrderBy(r => r.Date.Ticks).ToList();
+            }
+
+
+            var firstOfMonth = new DateTime(now.Year, now.Month, 1);
+
+            var calendarVM = new CalendarViewModel()
+            {
+                DaysInMonth = DateTime.DaysInMonth(now.Year, now.Month),
+                Month = now.ToString("MMMM", CultureInfo.InvariantCulture),
+                MonthNumber = now.Month,
+                Year = now.Year,
+                InitialOffset = (int)firstOfMonth.DayOfWeek,
+                Events = events
+            };
+
+            vm.CalendarVM = calendarVM;
+
+            return View(vm);
+
+        }
+
+        public IActionResult ChangeMonth(int changeAmount)
+        {
+            _calendarHelpingService.ModifyMonth(changeAmount);
+
+            return RedirectToAction("Calendar");
+        }
+
+        public IActionResult ResetToToday()
+        {
+            _calendarHelpingService.ResetToToday();
+
+            return RedirectToAction("Calendar");
+        }
+
+        public IActionResult ToggleShowOutdated()
+        {
+            _calendarHelpingService.ShowOutdatedEvents = !_calendarHelpingService.ShowOutdatedEvents;
+
+            return RedirectToAction("Calendar");
         }
     }
 }

@@ -10,6 +10,7 @@ namespace Interfaces.Services
         int Month { get; }
         bool ShowOutdatedEvents { get; set; }
         void ModifyMonth(int change);
+        void ResetToToday();
 
     }
 }

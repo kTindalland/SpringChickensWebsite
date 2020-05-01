@@ -120,7 +120,7 @@ namespace SpringChickens.Controllers
 
         #endregion
 
-        public IActionResult CalendarManagement()
+        public IActionResult Calendar()
         {
             // Validate is admin
             if (!_credentialHoldingService.IsAdmin) return RedirectToRoute(new { controller = "Home", action = "Index" });
@@ -149,13 +149,13 @@ namespace SpringChickens.Controllers
             if (showOutdatedEvents)
             {
                 vm.ShowOutdatedEvents = true;
-                vm.AllCalendarEvents = _context.CalendarEventRepository.GetAllEvents();
+                vm.AllCalendarEvents = _context.CalendarEventRepository.GetAllEvents().OrderBy(r => r.Date.Ticks).ToList();
             }
             else
             {
                 vm.ShowOutdatedEvents = false;
                 var currentDate = DateTime.Now;
-                vm.AllCalendarEvents = _context.CalendarEventRepository.GetEventsAfterDate(currentDate.Year, currentDate.Month);
+                vm.AllCalendarEvents = _context.CalendarEventRepository.GetEventsAfterDate(currentDate.Year, currentDate.Month).OrderBy(r => r.Date.Ticks).ToList();
             }
             
 
@@ -176,11 +176,76 @@ namespace SpringChickens.Controllers
             return View(vm);
         }
 
-        public IActionResult ChangeMonth(int changeAmount, string routebackController, string routebackAction)
+        public IActionResult ChangeMonth(int changeAmount)
         {
-            
+            // Validate is admin
+            if (!_credentialHoldingService.IsAdmin) return RedirectToRoute(new { controller = "Home", action = "Index" });
 
-            return RedirectToRoute(new { controller = routebackController, action = routebackAction });
+            _calendarHelpingService.ModifyMonth(changeAmount);
+
+            return RedirectToAction("Calendar");
+        }
+
+        public IActionResult ResetToToday()
+        {
+            // Validate is admin
+            if (!_credentialHoldingService.IsAdmin) return RedirectToRoute(new { controller = "Home", action = "Index" });
+            
+            _calendarHelpingService.ResetToToday();
+
+            return RedirectToAction("Calendar");
+        }
+
+        public IActionResult ToggleShowOutdated()
+        {
+            // Validate is admin
+            if (!_credentialHoldingService.IsAdmin) return RedirectToRoute(new { controller = "Home", action = "Index" });
+
+            _calendarHelpingService.ShowOutdatedEvents = !_calendarHelpingService.ShowOutdatedEvents;
+
+            return RedirectToAction("Calendar");
+        }
+
+        public IActionResult CreateNewEvent()
+        {
+            // Validate is admin
+            if (!_credentialHoldingService.IsAdmin) return RedirectToRoute(new { controller = "Home", action = "Index" });
+
+            var vm = _vmFactory.Resolve<NewEventViewModel>();
+            vm.ErrorMessage = "";
+
+
+            return View(vm);
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public IActionResult NewCalendarEvent(NewEventViewModel vm)
+        {
+            // Validate is admin
+            if (!_credentialHoldingService.IsAdmin) return RedirectToRoute(new { controller = "Home", action = "Index" });
+
+            string errormsg;
+
+            _context.CalendarEventRepository.AddEvent(vm.Date, vm.Title, out errormsg);
+
+            if (errormsg != "")
+            {
+                var newVm = _vmFactory.Resolve<NewEventViewModel>();
+                newVm.ErrorMessage = errormsg;
+                return View("CreateNewEvent", newVm);
+            }
+
+            return RedirectToAction("Calendar");
+        }
+
+        public IActionResult DeleteEvent(int id)
+        {
+            // Validate is admin
+            if (!_credentialHoldingService.IsAdmin) return RedirectToRoute(new { controller = "Home", action = "Index" });
+
+            _context.CalendarEventRepository.DeleteEvent(id);
+
+            return RedirectToAction("Calendar");
         }
     }
 }

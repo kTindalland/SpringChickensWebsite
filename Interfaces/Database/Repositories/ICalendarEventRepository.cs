@@ -12,6 +12,6 @@ namespace Interfaces.Database.Repositories
         List<ICalendarEvent> GetSpecifiedMonthsEvents(int year, int month);
         List<ICalendarEvent> GetAllEvents();
         void DeleteEvent(int id);
-        void AddEvent(DateTime date, string description);
+        void AddEvent(DateTime date, string description, out string errormsg);
     }
 }

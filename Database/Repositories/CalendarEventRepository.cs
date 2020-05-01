@@ -26,7 +26,7 @@ namespace Database.Repositories
             return true;
         }
 
-        public void AddEvent(DateTime date, string description)
+        public void AddEvent(DateTime date, string description, out string errormessage)
         {
             var newRecord = new CalendarEvent()
             {
@@ -34,6 +34,13 @@ namespace Database.Repositories
                 Description = description
             };
 
+            if (Context.CalendarEvents.Any(r => r.Date.Year == newRecord.Date.Year && r.Date.Month == newRecord.Date.Month && r.Date.Day == newRecord.Date.Day))
+            {
+                errormessage = "There is already an event on this day.";
+                return;
+            }
+
+            errormessage = "";
             Add(newRecord);
         }
 
@@ -48,6 +55,7 @@ namespace Database.Repositories
             // Get the record
             var record = Context.CalendarEvents.First(r => r.Id == id);
             Context.CalendarEvents.Remove(record);
+            Context.SaveChanges();
         }
 
         public List<ICalendarEvent> GetAllEvents()

@@ -59,6 +59,43 @@ namespace SpringChickens.Services
         public CalendarHelpingService(IHttpContextAccessor httpContextAccessor)
         {
             _httpContextAccessor = httpContextAccessor;
+
+            ResetToToday();
+        }
+
+        public void ModifyMonth(int change)
+        {
+            Month += change;
+
+            if (Month <= 0)
+            {
+                Month = 12;
+                Year--;
+            }
+
+            if (Month > 12)
+            {
+                Month = 1;
+                Year++;
+            }
+
+            if (Year < 1)
+            {
+                Year = 1;
+            }
+            
+            if (Year > 9999)
+            {
+                Year = 9999;
+            }
+        }
+
+        public void ResetToToday()
+        {
+            var today = DateTime.Now;
+
+            Year = today.Year;
+            Month = today.Month;
         }
     }
 }
