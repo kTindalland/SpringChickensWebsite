@@ -25,7 +25,7 @@
                     <a class="btn btn-outline-success card-link" asp-controller="Trip" asp-action="ViewTrip" asp-route-id="@trip.Id">View Posts</a>
                 </div>
                 <div class="card-footer">
-                    <small class="text-muted">Last updated 3 mins ago</small>
+                    <small class="text-muted">Last updated: @trip.DateTimeLastActivity.ToShortDateString() @trip.DateTimeLastActivity.ToShortTimeString()</small>
                 </div>
             </div>
         }
@@ -46,7 +46,7 @@
                 <a class="btn btn-outline-success" asp-controller="Trip" asp-action="ViewTrip" asp-route-id="@trip.Id">View Posts</a>
             </div>
             <div class="card-footer">
-                    <small class="text-muted">Last updated 3 mins ago</small>
+                <small class="text-muted">Last updated: @trip.DateTimeLastActivity.ToShortDateString() @trip.DateTimeLastActivity.ToShortTimeString()</small>
                 </div>
         </div>
     }

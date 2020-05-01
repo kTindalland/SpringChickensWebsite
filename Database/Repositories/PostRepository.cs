@@ -63,10 +63,16 @@ namespace Database.Repositories
                 Title = title,
                 BodyText = body,
                 PhotoFileName = photoFile,
-                TripId = tripId
+                TripId = tripId,
+                DateTimePosted = DateTime.Now
             };
 
             Context.Posts.Add(newPost);
+
+            if (Context.Trips.Any(r => r.Id == tripId))
+            {
+                Context.Trips.First(r => r.Id == tripId).DateTimeLastActivity = newPost.DateTimePosted;
+            }
         }
 
         public IEnumerable<IPost> GetAllPostsFromTrip(int tripId)
