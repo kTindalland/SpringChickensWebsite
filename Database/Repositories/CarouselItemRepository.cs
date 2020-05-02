@@ -164,7 +164,17 @@ namespace Database.Repositories
 
             var record = Context.CarouselItems.First(r => r.Id == id);
 
+            // Move up all the other records
+
+            var allRecordsBelow = Context.CarouselItems.Where(r => r.Position > record.Position);
+
+            foreach(var item in allRecordsBelow)
+            {
+                item.Position--;
+            }
+
             Context.Remove(record);
+
             Context.SaveChanges();
         }
 
