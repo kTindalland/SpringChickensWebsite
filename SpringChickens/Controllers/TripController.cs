@@ -36,7 +36,7 @@ namespace SpringChickens.Controllers
         {
             var vm = _viewModelFactory.Resolve<AllTripsViewModel>();
 
-            vm.Trips = _context.TripRepository.GetAllTrips().ToList();
+            vm.Trips = _context.TripRepository.GetAllTrips().OrderByDescending(r => r.DateTimeLastActivity).ToList();
 
             if (_credentialHoldingService.LoggedIn)
             {

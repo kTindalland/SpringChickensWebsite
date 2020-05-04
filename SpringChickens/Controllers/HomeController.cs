@@ -69,29 +69,6 @@ namespace SpringChickens.Controllers
             return View(vm);
         }
 
-        // TODO: Needs to be removed at some point. apparently needed in trip controller
-        public IActionResult Kai()
-        {
-            var vm = _viewModelFactory.Resolve<DogsViewModel>();
-
-
-            var posts = _context.PostRepository.GetAllPosts();
-
-            foreach (var post in posts)
-            {
-                var newDog = new Dog()
-                {
-                    Title = post.Title,
-                    MainBodyText = post.BodyText,
-                    PhotoName = $"/images/{post.PhotoFileName}",
-                    PostId = post.Id
-                };
-
-                vm.Dogs.Add(newDog);
-            }
-
-            return View(vm);
-        }
 
         public IActionResult Signup()
         {

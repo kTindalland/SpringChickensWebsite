@@ -4,6 +4,7 @@ using System.Text;
 using Interfaces.Database;
 using Interfaces.Database.Repositories;
 using Database.Repositories;
+using Microsoft.Extensions.Configuration;
 
 namespace Database
 {
@@ -20,9 +21,9 @@ namespace Database
         public IHomeTextRepository HomeTextRepository { get; }
         public ISubscriptionRepository SubscriptionRepository { get; }
 
-        public DatabaseUnitOfWork()
+        public DatabaseUnitOfWork(IConfiguration configuration)
         {
-            _context = new DatabaseContext();
+            _context = new DatabaseContext(configuration);
 
             UserRepository = new UserRepository(_context);
             TripRepository = new TripRepository(_context);
@@ -33,6 +34,7 @@ namespace Database
             HomeTextRepository = new HomeTextRepository(_context);
             SubscriptionRepository = new SubscriptionRepository(_context);
         }
+
 
         public bool SaveChanges()
         {

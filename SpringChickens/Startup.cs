@@ -34,11 +34,10 @@ namespace SpringChickens
         {
             services.AddControllersWithViews();
 
-            services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
+            services.AddTransient<IUnitOfWork, DatabaseUnitOfWork>();
 
             services.AddSingleton<ICryptographyService, CryptographyService>();
             services.AddSingleton<IUserService, UserService>();
-            services.AddTransient<IUnitOfWork, DatabaseUnitOfWork>();
             services.AddTransient<IEmailService, EmailService>();
             services.AddTransient<IPasswordFilterPredicate, PasswordFilterPredicate>();
             services.AddTransient<IUsernameFilterPredicate, UsernameFilterPredicate>();

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
 using Database.Models;
+using Microsoft.Extensions.Configuration;
 
 namespace Database
 {
@@ -17,9 +18,16 @@ namespace Database
         public DbSet<HomeText> HomeTexts { get; set; }
         public DbSet<Subscription> Subscriptions { get; set; }
 
+        private string _connectionString;
+
+        public DatabaseContext(IConfiguration configuration)
+        {
+            _connectionString = configuration["DefaultConnection"];
+        }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Data Source=SQL6009.site4now.net;Initial Catalog=DB_A54212_SpringChickens;User Id=DB_A54212_SpringChickens_admin;Password=BAE12345;");
+            optionsBuilder.UseSqlServer(_connectionString);
         }
 
 
