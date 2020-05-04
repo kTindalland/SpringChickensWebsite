@@ -17,5 +17,6 @@ namespace Interfaces.Database.Repositories
         void ResetTimeOnTrip(int id); // Gets latest post time
         void CreateTrip(string name, string description);
         void DeleteTrip(int id);
+        List<string> TripFilenames(int id);
     }
 }

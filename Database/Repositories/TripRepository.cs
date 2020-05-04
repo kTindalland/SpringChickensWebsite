@@ -6,6 +6,7 @@ using Interfaces.Database.Repositories;
 using Database.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using Microsoft.EntityFrameworkCore.Update;
 
 namespace Database.Repositories
 {
@@ -96,6 +97,22 @@ namespace Database.Repositories
 
                 Context.SaveChanges();
             }
+        }
+
+        public List<string> TripFilenames(int id)
+        {
+            var result = new List<string>();
+
+            if (Context.Trips.Any(r => r.Id == id))
+            {
+                var rec = Context.Trips.First(r => r.Id == id);
+
+                var posts = Context.Posts.Where(r => r.TripId == id);
+
+                result = posts.Select(r => r.PhotoFileName).ToList();
+            }
+
+            return result;
         }
     }
 }

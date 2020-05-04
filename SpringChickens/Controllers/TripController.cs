@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Hosting;
 using Interfaces.Database.Entities;
 using Microsoft.AspNetCore.Routing;
 using Interfaces.Services;
+using System.Net;
 
 namespace SpringChickens.Controllers
 {
@@ -49,7 +50,6 @@ namespace SpringChickens.Controllers
             return View(vm);
         }
 
-        // NEED TO UPDATE TO ADD IMAGES PATH LIKE IN KAI IN HOME CONT.
         public IActionResult ViewTrip(int id)
         {
             var vm = _viewModelFactory.Resolve<TripViewModel>();
@@ -97,9 +97,22 @@ namespace SpringChickens.Controllers
             // Validate is admin
             if (!_credentialHoldingService.IsAdmin) return RedirectToRoute(new { controller = "Home", action = "Index" });
 
+            // get filenames for all posts in trip
+            var filenames = _context.TripRepository.TripFilenames(id);
+
             _context.TripRepository.DeleteTrip(id);
 
-            //TODO: Cleanup orphaned files at this point
+            // Cleanup orphaned files at this point
+
+            foreach (var filename in filenames)
+            {
+                var filepath = $"{ _env.WebRootPath}/images/{filename}";
+
+                if (System.IO.File.Exists(filepath))
+                {
+                    System.IO.File.Delete(filepath);
+                }
+            }
 
             return RedirectToAction("ViewTrip");
         }
