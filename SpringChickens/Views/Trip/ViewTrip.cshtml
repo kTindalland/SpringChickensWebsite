@@ -12,19 +12,30 @@
 @{
 
 
-foreach (var post in Model.Posts)
+foreach (var post in Model.Posts.OrderByDescending(r => r.DateTimePosted))
 {
     <div class="card">
-        <div class="row card-body">
-            <div class="col-sm">
 
-                @{
-                    var fullPath = Model.PathPrefix + post.PhotoFileName;
+        <div class="card-header">
+            <p>Time posted: @post.DateTimePosted.ToShortDateString() @post.DateTimePosted.ToShortTimeString()</p>
+        </div>
+
+        <div class="row card-body">
+
+             @{
+                 if (post.PhotoFileName != "NoFileGiven")
+                 {
+                     var fullPath = Model.PathPrefix + post.PhotoFileName;
+
+                    <div class="col-sm">
+
+                        <img src=@fullPath class="img-fluid" />
+
+                    </div>
                 }
 
-                <img src=@fullPath class="img-fluid" />
+            }
 
-            </div>
             <div class="col-sm">
                 <h1 class="display-4">@post.Title</h1>
                 <p class="text-body">

@@ -16,5 +16,6 @@ namespace Interfaces.Database
         ICarouselItemRepository CarouselItemRepository { get; }
         ICalendarEventRepository CalendarEventRepository { get; }
         IHomeTextRepository HomeTextRepository { get; }
+        ISubscriptionRepository SubscriptionRepository { get; }
     }
 }

@@ -15,6 +15,7 @@ namespace Database
         public DbSet<CarouselItem> CarouselItems { get; set; }
         public DbSet<CalendarEvent> CalendarEvents { get; set; }
         public DbSet<HomeText> HomeTexts { get; set; }
+        public DbSet<Subscription> Subscriptions { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

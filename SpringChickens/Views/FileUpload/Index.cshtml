@@ -2,7 +2,7 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
-
+    ViewData["Title"] = "New Post";
 }
 @model FileUploadViewModel
 
@@ -30,7 +30,7 @@
 
             <div class="form-group">
                 <label>Select trip to add to:</label>
-                <select class="form-control-range" required>
+                <select class="form-control-range" required asp-for="SelectedTripId">
                     @foreach (var key in Model.Trips.Keys.OrderBy(k => k))
                     {
                         <option value="@key">@Model.Trips[key]</option>

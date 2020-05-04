@@ -13,5 +13,9 @@ namespace Interfaces.Database.Repositories
 
         string GetTripName(int id);
         int GetFirstTripId();
+        ITrip GetTripFromId(int id);
+        void ResetTimeOnTrip(int id); // Gets latest post time
+        void CreateTrip(string name, string description);
+        void DeleteTrip(int id);
     }
 }

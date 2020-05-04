@@ -23,9 +23,24 @@
                     <h5 class="card-title">@trip.TripName</h5>
                     <p class="card-text">@trip.TripDescription</p>
                     <a class="btn btn-outline-success card-link" asp-controller="Trip" asp-action="ViewTrip" asp-route-id="@trip.Id">View Posts</a>
+
+                    @if (Model.Layout_SignedIn)
+                    {
+                        var trigger = Model.SubscribedTrips.Contains(trip.Id);
+                        var linktext = trigger ? "Unsubscribe" : "Subscribe";
+                        var style = trigger ? "btn-warning" : "btn-success";
+
+
+                        <a class="card-link btn @style" asp-controller="Trip" asp-action="@linktext" asp-route-tripId="@trip.Id">@linktext</a>
+                    }
+
                 </div>
                 <div class="card-footer">
                     <small class="text-muted">Last updated: @trip.DateTimeLastActivity.ToShortDateString() @trip.DateTimeLastActivity.ToShortTimeString()</small>
+                    @if (Model.Layout_IsAdmin)
+                    {
+                        <a class="card-link btn btn-danger float-right" asp-controller="Trip" asp-action="DeleteTrip" asp-route-tripId="@trip.Id">Delete</a>
+                    }
                 </div>
             </div>
         }
@@ -44,10 +59,27 @@
                 <h5 class="card-title">@trip.TripName</h5>
                 <p class="card-text">@trip.TripDescription</p>
                 <a class="btn btn-outline-success" asp-controller="Trip" asp-action="ViewTrip" asp-route-id="@trip.Id">View Posts</a>
+
+                @if (Model.Layout_SignedIn)
+                {
+                    var trigger = Model.SubscribedTrips.Contains(trip.Id);
+                    var linktext = trigger ? "Unsubscribe" : "Subscribe";
+                    var style = trigger ? "btn-warning" : "btn-success";
+
+
+                    <a class="card-link btn @style" asp-controller="Trip" asp-action="@linktext" asp-route-tripId="@trip.Id">@linktext</a>
+                }
+                
+
+
             </div>
             <div class="card-footer">
                 <small class="text-muted">Last updated: @trip.DateTimeLastActivity.ToShortDateString() @trip.DateTimeLastActivity.ToShortTimeString()</small>
-                </div>
+                @if (Model.Layout_IsAdmin)
+                {
+                    <a class="card-link btn btn-danger float-right" asp-controller="Trip" asp-action="DeleteTrip" asp-route-tripId="@trip.Id">Delete</a>
+                }
+            </div>
         </div>
     }
 

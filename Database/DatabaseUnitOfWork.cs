@@ -18,6 +18,7 @@ namespace Database
         public ICarouselItemRepository CarouselItemRepository { get; }
         public ICalendarEventRepository CalendarEventRepository { get; }
         public IHomeTextRepository HomeTextRepository { get; }
+        public ISubscriptionRepository SubscriptionRepository { get; }
 
         public DatabaseUnitOfWork()
         {
@@ -30,6 +31,7 @@ namespace Database
             CarouselItemRepository = new CarouselItemRepository(_context);
             CalendarEventRepository = new CalendarEventRepository(_context);
             HomeTextRepository = new HomeTextRepository(_context);
+            SubscriptionRepository = new SubscriptionRepository(_context);
         }
 
         public bool SaveChanges()

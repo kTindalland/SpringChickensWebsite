@@ -7,6 +7,7 @@ using SpringChickens.Models;
 using Interfaces.Services;
 using System.Net.Mail;
 using System.Net;
+using Interfaces.Database.Entities;
 
 namespace SpringChickens.Services
 {
@@ -66,6 +67,44 @@ namespace SpringChickens.Services
             client.Send(mailMessage);
 
             return true;
+        }
+
+        public void SendSubscriptionEmails(List<IUser> users, ITrip trip)
+        {
+            SmtpClient client = new SmtpClient();
+            client.Credentials = new NetworkCredential("springchickenswebsite@gmail.com", "SuperSecurePassword123");
+            client.Host = "smtp.gmail.com";
+            client.EnableSsl = true;
+
+            foreach (var user in users)
+            {
+                var mail = GenerateSubscriptionMessage(user, trip);
+                client.Send(mail);
+            }
+
+        }
+
+        private MailMessage GenerateSubscriptionMessage(IUser user, ITrip trip)
+        {
+            var mailMessage = new MailMessage()
+            {
+                From = new MailAddress("springchickenswebsite@gmail.com")
+            };
+
+            mailMessage.To.Add(new MailAddress(user.Email));
+
+            mailMessage.Subject = $"Spring Chickens made a new post in {trip.TripName}";
+
+            mailMessage.IsBodyHtml = true;
+            mailMessage.Body = $"There was a new post in a trip you're subscribed to {user.UserName}!\n" +
+                $"Click <a href=\"https://localhost:44335/Trip/ViewTrip/{trip.Id}\">here</a> to go to the updated trip.\n\n\n" +
+                $"Want to unsubscribe from {trip.TripName}? <a href=\"https://localhost:44335/Trip\">Click here to go to the page to unsubscribe</a>\n" +
+                $"<p style=\"color:red\">You need to be signed in to unsubscribe.</p>";
+
+
+            mailMessage.Priority = MailPriority.Normal;
+
+            return mailMessage;
         }
     }
 }

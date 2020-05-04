@@ -38,6 +38,14 @@ namespace SpringChickens.Controllers
 
             vm.Trips = _context.TripRepository.GetAllTrips().ToList();
 
+            if (_credentialHoldingService.LoggedIn)
+            {
+                IUser user;
+                _context.UserRepository.GetUserIfExists(_credentialHoldingService.Username, out user);
+
+                vm.SubscribedTrips = _context.SubscriptionRepository.SubscribedTrips(user.Id);
+            }
+
             return View(vm);
         }
 
@@ -76,9 +84,50 @@ namespace SpringChickens.Controllers
                 _context.PostRepository.RemovePost(post);
 
                 _context.SaveChanges();
+
+                _context.TripRepository.ResetTimeOnTrip(int.Parse(tripId));
             }
+                      
 
             return RedirectToAction("ViewTrip", "Trip", new RouteValueDictionary() { {"id", tripId} });
+        }
+
+        public IActionResult DeleteTrip(int id)
+        {
+            // Validate is admin
+            if (!_credentialHoldingService.IsAdmin) return RedirectToRoute(new { controller = "Home", action = "Index" });
+
+            _context.TripRepository.DeleteTrip(id);
+
+            //TODO: Cleanup orphaned files at this point
+
+            return RedirectToAction("ViewTrip");
+        }
+
+        public IActionResult Subscribe(int tripId)
+        {
+            if (_credentialHoldingService.LoggedIn)
+            {
+                IUser user;
+                _context.UserRepository.GetUserIfExists(_credentialHoldingService.Username, out user);
+
+                _context.SubscriptionRepository.SubscribeUser(user.Id, tripId);
+            }
+
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult Unsubscribe(int tripId)
+        {
+            if (_credentialHoldingService.LoggedIn)
+            {
+                IUser user;
+                _context.UserRepository.GetUserIfExists(_credentialHoldingService.Username, out user);
+
+                _context.SubscriptionRepository.UnsubscribeUser(user.Id, tripId);
+            }
+
+            return RedirectToAction("Index");
         }
     }
 }

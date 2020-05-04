@@ -27,17 +27,20 @@ namespace SpringChickens.Controllers
         private IUnitOfWork _context;
         private readonly IViewModelFactory _viewModelFactory;
         private readonly ICredentialHoldingService _credentialHoldingService;
+        private readonly IEmailService _emailService;
 
         public FileUploadController(
             IWebHostEnvironment env,
             IUnitOfWork context,
             IViewModelFactory viewModelFactory,
-            ICredentialHoldingService credentialHoldingService)
+            ICredentialHoldingService credentialHoldingService,
+            IEmailService emailService)
         {
             _env = env;
             _context = context;
             _viewModelFactory = viewModelFactory;
             _credentialHoldingService = credentialHoldingService;
+            _emailService = emailService;
         }
 
         // GET: /<controller>/
@@ -81,23 +84,27 @@ namespace SpringChickens.Controllers
             var dir = _env.WebRootPath;
 
             var file = viewmodel.File;
-            var filename = DateTime.Now.Ticks.ToString() + file.FileName;
+            var filename = file != null ? DateTime.Now.Ticks.ToString() + file.FileName : "NoFileGiven";
 
-
-            using (var fileStream = new FileStream($"{dir}/images/{filename}", FileMode.Create, FileAccess.ReadWrite))
+            if (file != null)
             {
-                file.CopyTo(fileStream);
+                using (var fileStream = new FileStream($"{dir}/images/{filename}", FileMode.Create, FileAccess.ReadWrite))
+                {
+                    file.CopyTo(fileStream);
+                }
             }
 
-
-            var firstTripId = _context.TripRepository.GetFirstTripId();
-
-            _context.PostRepository.CreateAndAddNewPost(viewmodel.Title, viewmodel.Description, filename, firstTripId);
+            _context.PostRepository.CreateAndAddNewPost(viewmodel.Title, viewmodel.Description, filename, viewmodel.SelectedTripId);
 
 
             _context.SaveChanges();
 
-            
+            // Send out subscriptions
+
+            var usersSubscribed = _context.SubscriptionRepository.GetSubscribedUsers(viewmodel.SelectedTripId);
+            var trip = _context.TripRepository.GetTripFromId(viewmodel.SelectedTripId);
+
+            _emailService.SendSubscriptionEmails(usersSubscribed, trip);
 
             return RedirectToAction("Index");
         }
@@ -108,8 +115,11 @@ namespace SpringChickens.Controllers
             // Validate is admin
             if (!_credentialHoldingService.IsAdmin) return RedirectToRoute(new { controller = "Home", action = "Index" });
 
+            _context.TripRepository.CreateTrip(vm.Title, vm.Description);
+
             return RedirectToAction("AddNewTrip");
         }
+
 
         public IActionResult UploadCarouselItem()
         {

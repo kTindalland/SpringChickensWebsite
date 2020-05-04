@@ -23,7 +23,7 @@ namespace Database.Repositories
         public bool Add(ITrip entity)
         {
             Context.Add((Trip)entity);
-
+            Context.SaveChanges();
             return true;
         }
 
@@ -49,6 +49,53 @@ namespace Database.Repositories
             }
 
             return result;
+        }
+
+        public ITrip GetTripFromId(int id)
+        {
+            return Context.Trips.First(r => r.Id == id);
+        }
+
+        public void ResetTimeOnTrip(int id)
+        {
+            var tripPosts = Context.Posts.Where(r => r.TripId == id).OrderByDescending(r => r.DateTimePosted).ToList();
+
+            if (tripPosts.Count > 0)
+            {
+                // get trip
+                var trip = Context.Trips.First(r => r.Id == id);
+
+                trip.DateTimeLastActivity = tripPosts.First().DateTimePosted;
+
+                Context.SaveChanges();
+            }
+        }
+
+        public void CreateTrip(string name, string description)
+        {
+            var newTrip = new Trip()
+            {
+                TripName = name,
+                TripDescription = description,
+                DateTimeLastActivity = DateTime.Now
+            };
+
+            Add(newTrip);
+        }
+
+        public void DeleteTrip(int id)
+        {
+            if (Context.Trips.Any(r => r.Id == id))
+            {
+                var rec = Context.Trips.First(r => r.Id == id);
+
+                var posts = Context.Posts.Where(r => r.TripId == id);
+
+                Context.Trips.Remove(rec);
+                Context.Posts.RemoveRange(posts);
+
+                Context.SaveChanges();
+            }
         }
     }
 }
