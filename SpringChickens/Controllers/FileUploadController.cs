@@ -84,7 +84,7 @@ namespace SpringChickens.Controllers
             var dir = _env.WebRootPath;
 
             var file = viewmodel.File;
-            var filename = file != null ? DateTime.Now.Ticks.ToString() + file.FileName : "NoFileGiven";
+            var filename = file != null ? DateTime.Now.Ticks.ToString() + file.FileName.Replace(' ', '-') : "NoFileGiven";
 
             if (file != null)
             {
