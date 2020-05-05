@@ -39,7 +39,7 @@
                     <small class="text-muted">Last updated: @trip.DateTimeLastActivity.ToShortDateString() @trip.DateTimeLastActivity.ToShortTimeString()</small>
                     @if (Model.Layout_IsAdmin)
                     {
-                        <a class="card-link btn btn-danger float-right" asp-controller="Trip" asp-action="DeleteTrip" asp-route-tripId="@trip.Id">Delete</a>
+                        <a class="card-link btn btn-danger float-right" asp-controller="Trip" asp-action="DeleteTrip" asp-route-id="@trip.Id">Delete</a>
                     }
                 </div>
             </div>
@@ -77,7 +77,7 @@
                 <small class="text-muted">Last updated: @trip.DateTimeLastActivity.ToShortDateString() @trip.DateTimeLastActivity.ToShortTimeString()</small>
                 @if (Model.Layout_IsAdmin)
                 {
-                    <a class="card-link btn btn-danger float-right" asp-controller="Trip" asp-action="DeleteTrip" asp-route-tripId="@trip.Id">Delete</a>
+                    <a class="card-link btn btn-danger float-right" asp-controller="Trip" asp-action="DeleteTrip" asp-route-id="@trip.Id">Delete</a>
                 }
             </div>
         </div>

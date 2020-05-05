@@ -41,7 +41,8 @@ namespace SpringChickens.Services
             SmtpClient client = new SmtpClient();
             client.Credentials = new NetworkCredential(_configuration["EmailSettings:FromEmail"], _configuration["EmailSettings:Password"]);
             client.Host = _configuration["EmailSettings:PrimaryDomain"];
-            client.EnableSsl = true;
+            client.Port = int.Parse(_configuration["EmailSettings:Port"]);
+            client.EnableSsl = _configuration["EmailSettings:EnableSsl"] == "true";
             client.Send(mailMessage);
 
             return true;
@@ -52,7 +53,8 @@ namespace SpringChickens.Services
             SmtpClient client = new SmtpClient();
             client.Credentials = new NetworkCredential(_configuration["EmailSettings:FromEmail"], _configuration["EmailSettings:Password"]);
             client.Host = _configuration["EmailSettings:PrimaryDomain"];
-            client.EnableSsl = true;
+            client.Port = int.Parse(_configuration["EmailSettings:Port"]);
+            client.EnableSsl = _configuration["EmailSettings:EnableSsl"] == "true";
 
             foreach (var user in users)
             {

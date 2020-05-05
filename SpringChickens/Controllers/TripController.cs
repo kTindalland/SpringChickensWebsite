@@ -114,7 +114,7 @@ namespace SpringChickens.Controllers
                 }
             }
 
-            return RedirectToAction("ViewTrip");
+            return RedirectToAction("Index");
         }
 
         public IActionResult Subscribe(int tripId)
