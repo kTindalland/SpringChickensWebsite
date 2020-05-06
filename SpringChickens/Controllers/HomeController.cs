@@ -32,6 +32,7 @@ namespace SpringChickens.Controllers
         private readonly IViewModelFactory _viewModelFactory;
         private readonly IPasswordResetService _passwordResetService;
         private readonly ICalendarHelpingService _calendarHelpingService;
+        private readonly IEmailService _emailService;
 
         public HomeController(
             IWebHostEnvironment env,
@@ -40,7 +41,8 @@ namespace SpringChickens.Controllers
             ICredentialHoldingService credentialHoldingService,
             IViewModelFactory viewModelFactory,
             IPasswordResetService passwordResetService,
-            ICalendarHelpingService calendarHelpingService)
+            ICalendarHelpingService calendarHelpingService,
+            IEmailService emailService)
         {
             _env = env;
             _userService = userService;
@@ -49,6 +51,7 @@ namespace SpringChickens.Controllers
             _viewModelFactory = viewModelFactory;
             _passwordResetService = passwordResetService;
             _calendarHelpingService = calendarHelpingService;
+            _emailService = emailService;
         }
 
         public IActionResult Index()
@@ -248,6 +251,14 @@ namespace SpringChickens.Controllers
             _calendarHelpingService.ShowOutdatedEvents = !_calendarHelpingService.ShowOutdatedEvents;
 
             return RedirectToAction("Calendar");
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public IActionResult Contact(HomeViewModel vm)
+        {
+            _emailService.SendContactMessage(vm.ContactName, vm.ContactEmail, vm.ContactMessage);
+
+            return RedirectToAction("Index");
         }
     }
 }

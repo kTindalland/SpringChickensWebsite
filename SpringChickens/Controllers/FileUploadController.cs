@@ -140,7 +140,7 @@ namespace SpringChickens.Controllers
             var dir = _env.WebRootPath;
 
             var file = viewmodel.PhotoFile;
-            var filename = DateTime.Now.Ticks.ToString()+file.FileName;
+            var filename = DateTime.Now.Ticks.ToString() + file.FileName.Replace(' ', '-');
 
 
             using (var fileStream = new FileStream($"{dir}/carouselImages/{filename}", FileMode.Create, FileAccess.ReadWrite))

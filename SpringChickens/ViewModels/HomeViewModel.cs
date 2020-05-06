@@ -18,5 +18,9 @@ namespace SpringChickens.ViewModels
 
         public string HomeTextTitle { get; set; }
         public string HomeTextBody { get; set; }
+
+        public string ContactEmail { get; set; }
+        public string ContactName { get; set; }
+        public string ContactMessage { get; set; }
     }
 }

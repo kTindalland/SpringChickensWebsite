@@ -10,5 +10,7 @@ namespace Interfaces.Services
         bool SendPasswordResetEmail(string sendAddress, string tokenString);
 
         void SendSubscriptionEmails(List<IUser> users, ITrip trip);
+
+        void SendContactMessage(string name, string email, string message);
     }
 }
