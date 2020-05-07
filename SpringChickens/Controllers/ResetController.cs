@@ -19,25 +19,29 @@ namespace SpringChickens.Controllers
         private readonly ICredentialHoldingService _credentialHoldingService;
         private readonly IPasswordResetService _passwordResetService;
         private readonly IUnitOfWork _context;
+        private readonly IEmailService _emailService;
 
         public ResetController(
             IViewModelFactory viewModelFactory,
             ICredentialHoldingService credentialHoldingService,
             IPasswordResetService passwordResetService,
-            IUnitOfWork context)
+            IUnitOfWork context,
+            IEmailService emailService)
         {
             _viewModelFactory = viewModelFactory;
             _credentialHoldingService = credentialHoldingService;
             _passwordResetService = passwordResetService;
             _context = context;
+            _emailService = emailService;
         }
 
-        public IActionResult Index(string errorMessage = "")
+        public IActionResult Index(string errorMessage = "", string usernameErrorMessage = "")
         {
             _credentialHoldingService.WipeService();
 
             var vm = _viewModelFactory.Resolve<ResetViewModel>();
             vm.ErrorMessage = errorMessage;
+            vm.UsernameErrorMessage = usernameErrorMessage;
 
             return View(vm);
         }
@@ -108,6 +112,22 @@ namespace SpringChickens.Controllers
 
             var basevm = _viewModelFactory.Resolve<BaseViewModel>();
             return View("EmailSentConfirmation", basevm);
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public IActionResult SendUsername(ResetViewModel vm)
+        {
+            var usernames = _context.UserRepository.GetAllUsernamesFromEmail(vm.Email);
+
+            if (usernames.Count < 1)
+            {
+                return RedirectToAction("Index", new { usernameErrorMessage = "No user exists with that email." });
+            }
+
+            _emailService.SendUsernamesToEmail(usernames, vm.Email);
+
+            var basevm = _viewModelFactory.Resolve<BaseViewModel>();
+            return View("UsernameSentConfirmation", basevm);
         }
     }
 }

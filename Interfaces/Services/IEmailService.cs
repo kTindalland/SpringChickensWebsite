@@ -12,5 +12,7 @@ namespace Interfaces.Services
         void SendSubscriptionEmails(List<IUser> users, ITrip trip);
 
         void SendContactMessage(string name, string email, string message);
+
+        void SendUsernamesToEmail(List<string> usernames, string email);
     }
 }

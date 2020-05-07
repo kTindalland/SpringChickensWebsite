@@ -1,6 +1,6 @@
 ﻿@model SpringChickens.ViewModels.Reset.ResetViewModel;
 @{
-    ViewData["Title"] = "Reset Password";
+    ViewData["Title"] = "Recover Credentials";
 }
 
 <div class="row">
@@ -12,7 +12,21 @@
                 <input class="form-control" required type="text" placeholder="Please enter the username of the account you wish to recover" asp-for="Username" />
                 <small class="text-danger">@Model.ErrorMessage</small>
             </div>
-            <input type="submit" class="btn btn-primary" />
+            <input type="submit" class="btn btn-primary" value="Reset my password" />
+        </form>
+    </div>
+</div>
+
+<div class="row mt-3">
+    <div class="col-sm-3"></div>
+    <div class="col-sm-6">
+        <form asp-controller="Reset" asp-action="SendUsername">
+            <div class="form-group">
+                <label>Email</label>
+                <input class="form-control" required type="email" placeholder="Please enter the email of the account you wish to recover." asp-for="Email" />
+                <small class="text-danger">@Model.UsernameErrorMessage</small>
+            </div>
+            <input type="submit" class="btn btn-primary" value="Send me my Username" />
         </form>
     </div>
 </div>

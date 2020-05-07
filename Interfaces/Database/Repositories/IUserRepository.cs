@@ -27,5 +27,7 @@ namespace Interfaces.Database.Repositories
         List<IUser> GetAllUsers();
 
         void ChangeAdminStatus(int id, bool adminStatus);
+
+        List<string> GetAllUsernamesFromEmail(string email);
     }
 }

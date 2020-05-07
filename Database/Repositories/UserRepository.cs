@@ -132,5 +132,12 @@ namespace Database.Repositories
 
             Context.SaveChanges();
         }
+
+        public List<string> GetAllUsernamesFromEmail(string email)
+        {
+            var users = Context.Users.Where(r => r.Email == email).Select(r => r.UserName).ToList();
+
+            return users;
+        }
     }
 }

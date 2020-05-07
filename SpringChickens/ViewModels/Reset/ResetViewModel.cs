@@ -15,5 +15,8 @@ namespace SpringChickens.ViewModels.Reset
 
         public string Username { get; set; }
         public string ErrorMessage { get; set; }
+
+        public string Email { get; set; }
+        public string UsernameErrorMessage { get; set; }
     }
 }

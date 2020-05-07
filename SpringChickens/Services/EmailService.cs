@@ -9,6 +9,7 @@ using System.Net.Mail;
 using System.Net;
 using Interfaces.Database.Entities;
 using Microsoft.Extensions.Configuration;
+using System.Text;
 
 namespace SpringChickens.Services
 {
@@ -106,6 +107,33 @@ namespace SpringChickens.Services
             mailMessage.Priority = MailPriority.Normal;
 
             return mailMessage;
+        }
+
+        public void SendUsernamesToEmail(List<string> usernames, string email)
+        {
+            var client = GetClient();
+
+            var mailMessage = new MailMessage()
+            {
+                From = new MailAddress(_configuration["EmailSettings:FromEmail"]),
+                Subject = "Your username(s)",
+                IsBodyHtml = true,
+                Priority = MailPriority.High
+            };
+
+            var stringBuilder = new StringBuilder();
+            stringBuilder.Append("Username(s) associated : ");
+
+            foreach (var name in usernames)
+            {
+                stringBuilder.Append($"{name} , ");
+            }
+
+            mailMessage.Body = stringBuilder.ToString();
+
+            mailMessage.To.Add(email);
+
+            client.Send(mailMessage);
         }
     }
 }
